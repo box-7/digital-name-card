@@ -50,9 +50,9 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           # firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          # projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
           # github actionsに自動生成された firebase initで時作成されたと思われる
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TS_DIGITAL_CARD_NAME }}
-          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
           channelId: live
 
 
