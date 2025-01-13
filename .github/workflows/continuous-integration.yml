@@ -1,5 +1,7 @@
 name: CICD
 
+# *** 要注意 firebase.jsonの設定がおかしいとデプロイできない***
+
 on:
   push:
     branches:
@@ -41,6 +43,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      # - uses: actions/setup-node@v4  # これを追加 // 追加せずにエラー解決できた firebase.jsonの問題だった
+      #   with:
+      #     node-version: '20'
+      # - name: Install dependencies  # これも追加
+      #   run: npm install
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -71,6 +78,7 @@ jobs:
 # 一意性: 各デプロイが異なるチャンネルIDを持つため、PRやコミットごとに個別のプレビューURLが生成される
 # トレーサビリティ: チャンネルIDがコミットハッシュと一致するため、どのコードがデプロイされているか追跡が容易
           channelId: '${{ github.sha }}'
+          # entryPoint: '.' // 追加せずにエラー解決できた firebase.jsonの問題だった
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
 
