@@ -49,13 +49,14 @@ jobs:
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          # firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-          # projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
           # github actionsに自動生成された firebase initで時作成されたと思われる
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TS_DIGITAL_CARD_NAME }}
+          # 使えないので、コメントアウト
+          # firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TS_DIGITAL_CARD_NAME }}
           channelId: live
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
+        # env:
+        #   FIREBASE_CLI_EXPERIMENTS: webframeworks
 
     # 別の書き方
     # env:
