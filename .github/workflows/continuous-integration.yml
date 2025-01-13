@@ -58,10 +58,10 @@ jobs:
         # env:
         #   FIREBASE_CLI_EXPERIMENTS: webframeworks
         uses: FirebaseExtended/action-hosting-deploy@v0
-          with:
-            firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          env:
-            FIREBASE_CLI_EXPERIMENTS: webframeworks
+        with:
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
 
     # 別の書き方
     # env:
