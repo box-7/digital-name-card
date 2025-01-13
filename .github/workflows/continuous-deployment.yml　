@@ -1,4 +1,4 @@
-name: CICD
+name: Continuous Deployment
 
 # *** 要注意 firebase.jsonの設定がおかしいとデプロイできない***
 
