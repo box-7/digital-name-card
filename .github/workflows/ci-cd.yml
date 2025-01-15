@@ -1,37 +1,3 @@
-# name: CI
-# on:
-#   push:
-#     branches:
-#       - main
-#   workflow_dispatch:
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     env:
-#       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-#       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: '20'
-#       - name: Install dependencies
-#         run: npm install
-#       - name: Run Prettier
-#         run: npx prettier --write .
-#       - name: Run tests
-#         run: npm run test
-#       - name: Build project
-#         run: npm run build
-#       - name: Upload build artifacts
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: build-artifacts
-#           path: dist
-
 
 name: CI & CD
 
@@ -70,9 +36,6 @@ jobs:
         with:
           name: build-artifacts # アップロードするアーティファクトの名前を指定
           path: dist # distディレクトリ内のすべてのファイルがアーティファクトとしてアップロードされる
-
-
-
 
   deploy:
     name: deploy
