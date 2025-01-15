@@ -55,6 +55,18 @@ jobs:
           name: build-artifacts # buildでアップロードしたアーティファクトの名前
           path: dist
       - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+        # Firebase Admin SDKの秘密鍵を生成
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"
+          # ${{ github.sha }}を使用する方がベストプラクティス → Firebaseのデプロイ先がpreviewURLになってしまう
+          # 一意性: 各デプロイが異なるチャンネルIDを持つため、PRやコミットごとに個別のプレビューURLが生成される
+          # トレーサビリティ: チャンネルIDがコミットハッシュと一致するため、どのコードがデプロイされているか追跡が容易
+          channelId: '${{ github.sha }}'
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+
         # uses: FirebaseExtended/action-hosting-deploy@v0
         # with:
         #   # firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
@@ -70,19 +82,6 @@ jobs:
         #   firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
         # env:
         #   FIREBASE_CLI_EXPERIMENTS: webframeworks
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-        # Firebase Admin SDKの秘密鍵を生成
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          projectId: "${{ secrets.FIREBASE_PROJECT_ID }}"  # Firebase プロジェクトID
-# ${{ github.sha }}を使用する方がベストプラクティス
-# 一意性: 各デプロイが異なるチャンネルIDを持つため、PRやコミットごとに個別のプレビューURLが生成される
-# トレーサビリティ: チャンネルIDがコミットハッシュと一致するため、どのコードがデプロイされているか追跡が容易
-          channelId: '${{ github.sha }}'
-          # entryPoint: '.' // 追加せずにエラー解決できた firebase.jsonの問題だった
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
-
 
 
     # 別の書き方
