@@ -5,21 +5,65 @@ import "./App.css";
 // import { Button } from "@/components/ui/button"
 import { HStack } from "@chakra-ui/react";
 import { Button, Stack, Theme } from "@chakra-ui/react";
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import Card from "./components/Card";
 
-function App() {
-  return (
-    <Stack align="flex-start">
-      <Button variant="surface" colorPalette="teal">
-        Auto Button
-      </Button>
-      <Theme p="4" appearance="dark" colorPalette="teal">
-        <Button variant="surface">Dark Button</Button>
-      </Theme>
-      <Theme p="4" appearance="light" colorPalette="teal">
-        <Button variant="surface">Light Button</Button>
-      </Theme>
-    </Stack>
-  );
-}
+import AppRoutes from "./routes/AppRoutes";
+const App: React.FC = () => {
+  return <AppRoutes />;
+};
 
 export default App;
+
+// (
+
+// <>
+//         <RouterProvider router={router} />
+//         return
+
+//         <Stack align="flex-start">
+//                 <Button variant="surface" colorPalette="teal">
+//                         Auto Button
+//                 </Button>
+//                 <Theme p="4" appearance="dark" colorPalette="teal">
+//                         <Button variant="surface">Dark Button</Button>
+//                 </Theme>
+//                 <Theme p="4" appearance="light" colorPalette="teal">
+//                         <Button variant="surface">Light Button</Button>
+//                 </Theme>
+//         </Stack>
+// </>
+// );
+
+// const router = createBrowserRouter([
+//         // {
+//         //   path: '/',
+//         //   element: <Home />,
+//         // },
+//         // {
+//         //   path: '/about',
+//         //   element: <About />,
+//         // },
+//         {
+//           path: '/cards/:id',
+//           element: <Card />,
+//         },
+//       ]);
+
+// function App() {
+//   return (
+//     <Stack align="flex-start">
+//       <Button variant="surface" colorPalette="teal">
+//         Auto Button
+//       </Button>
+//       <Theme p="4" appearance="dark" colorPalette="teal">
+//         <Button variant="surface">Dark Button</Button>
+//       </Theme>
+//       <Theme p="4" appearance="light" colorPalette="teal">
+//         <Button variant="surface">Light Button</Button>
+//       </Theme>
+//     </Stack>
+//   );
+// }
+
+// export default App;
