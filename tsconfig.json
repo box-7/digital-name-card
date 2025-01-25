@@ -12,6 +12,8 @@
                 "module": "ESNext",
                 "skipLibCheck": true,
                 "allowJs": false,
+                // "moduleResolution": "node", // ここを変更
+                // ViteプロジェクトでReactとTypeScriptを使用している場合、通常はmoduleResolutionをbundlerに設定することが推奨される
                 "moduleResolution": "Bundler",
                 "allowImportingTsExtensions": true,
                 "isolatedModules": true,

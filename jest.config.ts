@@ -1,19 +1,16 @@
 import type { Config } from "jest";
 
 const config: Config = {
-  // npm install --save-dev ts-jest @types/jestで
-  // ts-jest と @types/jest を開発依存としてインストールし、TypeScriptのサポートを有効にできる
-  // 以下を設定することで、TypeScriptで書かれたプロジェクトをJestでテストできるようになる
+  // npm install --save-dev ts-jest @types/jestでts-jest と @types/jest を開発依存としてインストール
+  // TypeScriptのサポートを有効にでき、TypeScriptで書かれたプロジェクトをJestでテストできるようにする
   preset: "ts-jest",
-  // 指定された各 setupFile は、各テストファイルごとに一度実行される
-  // これらのスクリプトは、テスト環境がセットアップされた後、setupFilesAfterEnv より前、そしてテストコード自体が実行される前に実行される
-  // Jestは .env ファイルから環境変数を自動的に読み込むことができない
-  // テストコード内で process.env を使って環境変数にアクセスすることができなくなる
+  // テスト環境がセットアップされた後、setupFilesAfterEnv より前、そしてテストコード自体がそれぞれ実行される前に実行される
+  // Jestは .env ファイルから環境変数を自動的に読み込むことができず、テストコード内で process.env を使って環境変数にアクセスすることができない
+// Jestがテストを実行する前にdotenvパッケージを使用して環境変数を読み込むことを指定
   setupFiles: ["dotenv/config"],
   // jsdom は、Node.js 環境でブラウザのようなDOM（Document Object Model）をシミュレートするためのライブラリ
   testEnvironment: "jest-environment-jsdom",
   // setupFilesAfterEnv: テスト環境がセットアップされた後に実行されるスクリプトファイルのリストを指定
-  // ["./jest.setup.ts"]: jest.setup.ts というファイルを指定
   setupFilesAfterEnv: ["./jest.setup.ts"],
   // JestがTypeScriptファイルをトランスパイル（変換）するための設定
   // 具体的には、ts-jest を使用して .ts や .tsx ファイルをJavaScriptに変換
@@ -24,16 +21,21 @@ const config: Config = {
   moduleNameMapper: {
     // CSS/LESS ファイルリソースのスタブ化: 画像やスタイルシートなどのリソースをテスト中にスタブ（ダミー）モジュールに置き換えることができる
     "\\.(css|less)$": "identity-obj-proxy",
-    // ^@/(.*)$:
-    // ^ は文字列の先頭を示す // @/ はエイリアスのプレフィックス
-    // (.*) は任意の文字列にマッチする正規表現 // $ は文字列の終わりを示す
-    // @/ で始まる任意の文字列にマッチする
-    // エイリアス設定: @/ を使って、src ディレクトリ内のモジュールを簡単にインポートできます。
-    // 可読性向上: 長い相対パスを避け、コードの可読性と保守性を向上させる
+// ^@/(.*)$:
+        // 正規表現パターン
+        // ^は文字列の先頭を示す
+        // @/はエイリアスのプレフィックス
+        // (.*)は任意の文字列にマッチするキャプチャグループ
+        // $は文字列の終わりを示す
+// <rootDir>/src/$1:
+        // 置換パターン
+        // <rootDir>はプロジェクトのルートディレクトリを示す
+        // srcはsrcディレクトリを示す
+        // $1は正規表現のキャプチャグループにマッチした部分を示す
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   // Jestのテスト結果をHTML形式でレポートするための設定
-  // 具体的には、jest-html-reporters パッケージを使用して、テスト結果をHTMLファイルとして生成
+  // jest-html-reporters パッケージを使用して、テスト結果をHTMLファイルとして生成
   reporters: [
     "default",
     [
