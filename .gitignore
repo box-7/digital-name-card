@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .env
+
+# Jest HTMLレポート
+html-report/
+result.js

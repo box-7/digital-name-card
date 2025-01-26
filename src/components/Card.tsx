@@ -97,7 +97,7 @@ const Card: React.FC = () => {
 
   // URLのidと一致するデータをフィルタリング
   const filteredData = data.filter((item) => item.user_id === id);
-  //   console.log("filteredData", filteredData);
+//     console.log("filteredData", filteredData);
 
   if (loading) {
     return (
