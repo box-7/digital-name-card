@@ -1,19 +1,9 @@
-// import React from 'react';
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import supabase from "../../supabase";
 import { Button, Stack, Theme, Spinner, Box } from "@chakra-ui/react";
-
-interface DataItem {
-  id: string;
-  name: string;
-  description: string;
-  github_id: string;
-  qiita_id: string;
-  x_id: string;
-  user_id: string;
-  // [key: string]: any; // 他のプロパティを許容
-}
+// import User, { UserData } from '../models/User';
+import User from "../models/User";
 
 interface Skill {
   id: string;
@@ -21,33 +11,42 @@ interface Skill {
   // description: string;
 }
 
-// interface UserSkill {
-//         user_id: string;
-//         skill_id: string;
-// }
-
 const Card: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<DataItem[]>([]);
+  // const [data, setData] = useState<DataItem[]>([]);
+  const [data, setData] = useState<User[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // ローディング状態を管理するステート
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // データフェッチ開始時にローディングを開始
-      const { data, error } = await supabase.from("users").select("*");
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("user_id", id)
+        .single();
 
       if (error) {
         setError(error.message);
-      } else {
-        setData(data);
+      } else if (data) {
+        // User.createを使用する場合
+        const fetchedUser = User.create(
+          data.name,
+          data.description,
+          data.github_id,
+          data.qiita_id,
+          data.x_id,
+          skills.map((skill) => skill.name) // スキル名の配列を渡す
+        );
+        setData([fetchedUser]); // 配列として設定
       }
-      setLoading(false); // データフェッチ完了時にローディングを終了
+      setLoading(false);
     };
 
     fetchData();
-  }, [id]);
+  }, [id, skills]); // skillsを依存配列に追加
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -62,13 +61,11 @@ const Card: React.FC = () => {
           throw userSkillsError;
         }
 
-        console.log("userSkills", userSkills);
-
         if (userSkills && userSkills.length > 0) {
           // userSkillsから、skill_idのリストを取得
           const skillIds = userSkills.map((us) => us.skill_id);
           // skillテーブルからskill_idと一致するnameを取得
-          // .in('id', skillIds)は、Supabaseのクエリメソッドの一つ // SQLのIN句に相当
+          // .in('id', skillIds)は、Supabaseのクエリメソッドの一つ  SQLのIN句に相当
           // 指定したカラム（この場合はid）が指定した値のリスト（skillIds）のいずれかに一致するレコードをフィルタリングする
           const { data: skillsData, error: skillsError } = await supabase
             .from("skill")
@@ -91,13 +88,8 @@ const Card: React.FC = () => {
         }
       }
     };
-
     fetchSkills();
   }, [id]);
-
-  // URLのidと一致するデータをフィルタリング
-  const filteredData = data.filter((item) => item.user_id === id);
-//     console.log("filteredData", filteredData);
 
   if (loading) {
     return (
@@ -117,12 +109,12 @@ const Card: React.FC = () => {
       <h1>Card ID: {id}</h1>
       {error && <p>Error: {error}</p>}
       <Stack align="flex-start">
-        {filteredData.length > 0 ? (
-          filteredData.map((item, index) => (
+        {data.length > 0 ? (
+          data.map((item, index) => (
             <div key={index}>
               <p>名前：{item.name}</p>
-              <h1>自己紹介：{item.description}</h1>
-              {/* <p>スキル：一旦空</p> */}
+              <h1>自己紹介：{item.introduction}</h1>
+              {/* 要コメントアウト  <p>スキル：一旦空</p> */}
               <ul>
                 {skills.map((skill, skillIndex) => (
                   <li key={skillIndex}>
@@ -130,9 +122,25 @@ const Card: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <p>GitHub：{item.github_id}</p>
-              <p>Qiita：{item.qiita_id}</p>
-              <p>X：{item.x_id}</p>
+
+              <p>
+                GitHub：
+                <a href={item.githubId} target="_blank" rel="noopener noreferrer">
+                  {item.githubId}
+                </a>
+              </p>
+              <p>
+                Qiita：
+                <a href={item.qiitaId} target="_blank" rel="noopener noreferrer">
+                  {item.qiitaId}
+                </a>
+              </p>
+              <p>
+                X：
+                <a href={item.xId} target="_blank" rel="noopener noreferrer">
+                  {item.xId}
+                </a>
+              </p>
             </div>
           ))
         ) : (
@@ -141,36 +149,6 @@ const Card: React.FC = () => {
       </Stack>
     </div>
   );
-
-  //         const [data, setData] = useState<any[]>([])
-  //         const [error, setError] = useState<string | null>(null)
-
-  //         useEffect(() => {
-  //           const fetchData = async () => {
-  //             const { data, error } = await supabase
-  //               .from('users')
-  //               .select('*')
-
-  //             if (error) {
-  //               setError(error.message)
-  //             } else {
-  //               setData(data)
-  //             }
-  //           }
-
-  //           fetchData()
-  //         }, [])
-  //   const { id } = useParams<{ id: string }>();
-  //   return (
-  //     <div>
-  //       <h1>Card ID: {id}</h1>
-  //       <Stack align="flex-start">
-  //         {data.map((item, index) => (
-  //           <div key={index}>{JSON.stringify(item)}</div>
-  //         ))}
-  //       </Stack>
-  //     </div>
-  //   );
 };
 
 export default Card;
