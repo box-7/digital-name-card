@@ -1,19 +1,29 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import supabase from "../../supabase";
-import { Button, Stack, Theme, Spinner, Box } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Stack,
+  Spinner,
+  Text,
+  Link,
+  List,
+  Icon,
+  HStack,
+} from "@chakra-ui/react";
 // import User, { UserData } from '../models/User';
 import User from "../models/User";
+import { FaGithub, FaTwitter } from "react-icons/fa";
+import { SiQiita } from "react-icons/si";
 
 interface Skill {
   id: string;
   name: string;
-  // description: string;
 }
 
 const Card: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  // const [data, setData] = useState<DataItem[]>([]);
   const [data, setData] = useState<User[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -105,49 +115,76 @@ const Card: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Card ID: {id}</h1>
-      {error && <p>Error: {error}</p>}
-      <Stack align="flex-start">
+    <Box p={4}>
+      {error && <Text color="red.500">Error: {error}</Text>}
+      <Stack align="flex-start" gap={4}>
         {data.length > 0 ? (
           data.map((item, index) => (
-            <div key={index}>
-              <p>名前：{item.name}</p>
-              <h1>自己紹介：{item.introduction}</h1>
-              {/* 要コメントアウト  <p>スキル：一旦空</p> */}
-              <ul>
-                {skills.map((skill, skillIndex) => (
-                  <li key={skillIndex}>
-                    <p>スキル： {skill.name}</p>
-                  </li>
-                ))}
-              </ul>
-
-              <p>
-                GitHub：
-                <a href={item.githubId} target="_blank" rel="noopener noreferrer">
-                  {item.githubId}
-                </a>
-              </p>
-              <p>
-                Qiita：
-                <a href={item.qiitaId} target="_blank" rel="noopener noreferrer">
-                  {item.qiitaId}
-                </a>
-              </p>
-              <p>
-                X：
-                <a href={item.xId} target="_blank" rel="noopener noreferrer">
-                  {item.xId}
-                </a>
-              </p>
-            </div>
+            <Box key={index} p={4} borderWidth="1px" borderRadius="lg" w="100%">
+              <Heading as="h2" size="md" mb={2}>
+                {item.name}
+              </Heading>
+              <Box mb={2} textAlign="left">
+                <Text>自己紹介</Text>
+                {/* <Box fontSize="sm" dangerouslySetInnerHTML={{ __html: item.introduction }} /> */}
+                <Text fontSize="sm"> {item.introduction}</Text>
+              </Box>
+              <Box
+                mb={2}
+                textAlign="left"
+                display="flex"
+                justifyContent="center"
+              >
+                スキル：
+                <List.Root as="ol">
+                  {skills.map((skill, skillIndex) => (
+                    <List.Item key={skillIndex}>{skill.name}</List.Item>
+                  ))}
+                </List.Root>
+              </Box>
+              <Box
+                mb={2}
+                textAlign="left"
+                display="flex"
+                justifyContent="center"
+              >
+                <HStack mt={4} gap={4}>
+                  {item.githubId && (
+                    <Link
+                      href={item.githubId}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon as={FaGithub} w={6} h={6} />
+                    </Link>
+                  )}
+                  {item.qiitaId && (
+                    <Link
+                      href={item.qiitaId}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon as={SiQiita} w={6} h={6} />
+                    </Link>
+                  )}
+                  {item.xId && (
+                    <Link
+                      href={item.xId}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon as={FaTwitter} w={6} h={6} />
+                    </Link>
+                  )}
+                </HStack>
+              </Box>
+            </Box>
           ))
         ) : (
-          <p>No data found for ID: {id}</p>
+          <Text>No data found for ID: {id}</Text>
         )}
       </Stack>
-    </div>
+    </Box>
   );
 };
 
