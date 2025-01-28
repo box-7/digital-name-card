@@ -25,4 +25,7 @@ export default defineConfig({
       mountedPath: "process.env",
     }),
   ],
+  build: {
+        sourcemap: true, // ソースマップを有効にする
+      },
 });
