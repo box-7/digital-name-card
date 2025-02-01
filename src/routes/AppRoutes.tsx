@@ -1,6 +1,10 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Card from "../components/Card";
+// デフォルトエクスポートをインポート
+// import Register from "../pages/cards/Register";
+// 名前付きエクスポートをインポート
+import Register  from "../pages/cards/Register";
 
 // 仮のHomeコンポーネントを定義
 const Home: React.FC = () => {
@@ -16,6 +20,10 @@ const router = createBrowserRouter([
     path: "/cards/:id",
     element: <Card />,
   },
+  {
+        path:"/cards/register",
+        element: <Register />
+  }
 ]);
 
 const AppRoutes: React.FC = () => {
