@@ -5,9 +5,10 @@ import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+// 開発環境からユーザー登録する時、2回リクエストが飛んで、同じidが登録されてエラーになるためコメントアウト
+//   <StrictMode>
     <Provider>
       <App />
     </Provider>
-</StrictMode>
+// </StrictMode>
 )
