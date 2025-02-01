@@ -20,6 +20,7 @@ import {
 import { Fieldset } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface Skill {
   id: number;
@@ -55,6 +56,7 @@ const Register: React.FC = () => {
       favoriteSkill: "",
     },
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -101,6 +103,8 @@ const Register: React.FC = () => {
       if (userSkillError) {
         throw userSkillError;
       }
+      // 登録に成功したらページ遷移
+      navigate("/");
     } catch (error) {
       console.error("Error registering user:", error);
     }
