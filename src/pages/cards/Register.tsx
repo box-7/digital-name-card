@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../../../supabase";
 import {
-  // Box,
+  Box,
   Button,
   // FormControl,
   // FormLabel,
@@ -10,6 +10,7 @@ import {
   Textarea,
   Stack,
   // SelectItem,
+  Text,
 } from "@chakra-ui/react";
 import {
   NativeSelectField,
@@ -110,17 +111,28 @@ const Register: React.FC = () => {
     }
   };
   return (
-    // <form onSubmit={handleSubmit}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* <Fieldset.Root size="lg" maxW="md" onSubmit={handleSubmit}> onSubmit={handleSubmit}> は不要のはず */}
-      <Fieldset.Root size="lg" maxW="md" invalid>
-        <Stack>
-          <Fieldset.Legend>名刺新規登録</Fieldset.Legend>
-        </Stack>
+    <>
+      {/* <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="lg"> */}
+      <Text fontWeight="bold" fontSize="xl" mb={4} textAlign="center">
+        名刺新規登録
+      </Text>
+      <Box
+        maxW={{ base: "100%", md: "md" }}
+        mx="auto"
+        p={4}
+        borderWidth={1}
+        borderRadius="lg"
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* <Fieldset.Root size="lg" maxW="md" onSubmit={handleSubmit}> onSubmit={handleSubmit}> は不要のはず */}
+          <Fieldset.Root size="lg" maxW="md" invalid>
+            <Stack>
+              {/* <Fieldset.Legend fontWeight="bold">名刺新規登録</Fieldset.Legend> */}
+            </Stack>
 
-        <Fieldset.Content>
-          <Field label="好きな英単語 *">
-            {/* type="text"
+            <Fieldset.Content>
+              <Field label="好きな英単語 *">
+                {/* type="text"
                                                         入力フィールドのタイプをテキスト入力に設定
                                                         ユーザーがテキストを入力できるフィールドを提供
                                                 name="id"
@@ -135,86 +147,95 @@ const Register: React.FC = () => {
                                                         入力フィールドの値が変更されたときに呼び出されるイベントハンドラを設定
                                                         ユーザーが入力フィールドに文字を入力するたびに、この関数が呼び出され、入力値が更新される
                                                         通常、handleChange 関数は入力フィールドの値を状態（formData）に反映させるために使用 */}
-            {/* <Input type="text" name="id" value={ormData.id} onChange={handleChange} /> */}
-            <Input
-              type="text"
-              {...register("user_id", {
-                required: "User IDは必須入力です。",
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: "IDは英語文字列のみです。",
-                },
-              })}
-            />
-            {errors.user_id && <p>{errors.user_id.message}</p>}
-          </Field>
+                {/* <Input type="text" name="id" value={ormData.id} onChange={handleChange} /> */}
+                <Input
+                  type="text"
+                  {...register("user_id", {
+                    required: "User IDは必須入力です。",
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: "IDは英語文字列のみです。",
+                    },
+                  })}
+                />
+                {errors.user_id && <p>{errors.user_id.message}</p>}
+              </Field>
 
-          <Field label="お名前 *">
-            <Input
-              type="text"
-              {...register("name", {
-                required: "お名前は必須入力です。",
-                maxLength: {
-                  value: 20,
-                  message: "お名前は20文字以内にしてください。",
-                },
-              })}
-            />
-            {errors.name && <p>{errors.name.message}</p>}
-          </Field>
+              <Field label="お名前 *">
+                <Input
+                  type="text"
+                  {...register("name", {
+                    required: "お名前は必須入力です。",
+                    maxLength: {
+                      value: 20,
+                      message: "お名前は20文字以内にしてください。",
+                    },
+                  })}
+                />
+                {errors.name && <p>{errors.name.message}</p>}
+              </Field>
 
-          <Field label="自己紹介 *">
-            <Textarea
-              {...register("description", {
-                required: "自己紹介は必須入力です。",
-                maxLength: {
-                  value: 50,
-                  message: "自己紹介は50文字以内にしてください。",
-                },
-              })}
-              width="100%"
-              height="100px"
-            />
-            {errors.description && <p>{errors.description.message}</p>}
-          </Field>
+              <Field label="自己紹介 *">
+                <Textarea
+                  {...register("description", {
+                    required: "自己紹介は必須入力です。",
+                    maxLength: {
+                      value: 50,
+                      message: "自己紹介は50文字以内にしてください。",
+                    },
+                  })}
+                  width="100%"
+                  height="100px"
+                />
+                {errors.description && <p>{errors.description.message}</p>}
+              </Field>
 
-          <Field label="好きな技術 *">
-            <NativeSelectRoot>
-              {/* value プロパティを設定して、選択された値が formData.favoriteSkill にバインドされるようにする */}
-              <NativeSelectField
-                {...register("favoriteSkill", {
-                  required: "好きな技術は必須入力です。",
-                })}
-                placeholder="選択してください"
-              >
-                {skills.map((skill) => (
-                  <option key={skill.id} value={skill.id}>
-                    {skill.name}
-                  </option>
-                ))}
-              </NativeSelectField>
-            </NativeSelectRoot>
-            {errors.favoriteSkill && <p>{errors.favoriteSkill.message}</p>}
-          </Field>
-        </Fieldset.Content>
+              <Field label="好きな技術 *">
+                <NativeSelectRoot>
+                  {/* value プロパティを設定して、選択された値が formData.favoriteSkill にバインドされるようにする */}
+                  <NativeSelectField
+                    {...register("favoriteSkill", {
+                      required: "好きな技術は必須入力です。",
+                    })}
+                    placeholder="選択してください"
+                  >
+                    {skills.map((skill) => (
+                      <option key={skill.id} value={skill.id}>
+                        {skill.name}
+                      </option>
+                    ))}
+                  </NativeSelectField>
+                </NativeSelectRoot>
+                {errors.favoriteSkill && <p>{errors.favoriteSkill.message}</p>}
+              </Field>
+            </Fieldset.Content>
 
-        <Field label="GitHub ID">
-          <Input type="text" {...register("github_id")} />
-        </Field>
+            <Field label="GitHub ID">
+              <Input type="text" {...register("github_id")} />
+            </Field>
 
-        <Field label="Qiita ID">
-          <Input type="text" {...register("qiita_id")} />
-        </Field>
+            <Field label="Qiita ID">
+              <Input type="text" {...register("qiita_id")} />
+            </Field>
 
-        <Field label="X ID">
-          <Input type="text" {...register("x_id")} />
-        </Field>
+            <Field label="X ID">
+              <Input type="text" {...register("x_id")} />
+            </Field>
 
-        <Button type="submit" variant="surface" colorPalette="teal" size="sm">
-          登録
-        </Button>
-      </Fieldset.Root>
-    </form>
+            <Text> *は必須項目です</Text>
+
+            <Button
+              type="submit"
+              variant="surface"
+              colorPalette="teal"
+              size="sm"
+            >
+              登録
+            </Button>
+          </Fieldset.Root>
+        </form>
+      </Box>
+    </>
   );
 };
 
