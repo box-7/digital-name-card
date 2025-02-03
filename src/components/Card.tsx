@@ -11,11 +11,13 @@ import {
   List,
   Icon,
   HStack,
+  Button,
 } from "@chakra-ui/react";
 // import User, { UserData } from '../models/User';
 import User from "../models/User";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { SiQiita } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
 
 interface Skill {
   id: string;
@@ -28,6 +30,7 @@ const Card: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,71 +117,92 @@ const Card: React.FC = () => {
     );
   }
 
+  const handleBack = () => {
+    navigate("/");
+  };
+
   return (
     <Box p={4}>
       {error && <Text color="red.500">Error: {error}</Text>}
       <Stack align="flex-start" gap={4}>
         {data.length > 0 ? (
           data.map((item, index) => (
-            <Box key={index} p={4} borderWidth="1px" borderRadius="lg" w="100%">
-              <Heading as="h2" size="md" mb={2}>
-                {item.name}
-              </Heading>
-              <Box mb={2} textAlign="left">
-                <Text>自己紹介</Text>
-                {/* <Box fontSize="sm" dangerouslySetInnerHTML={{ __html: item.introduction }} /> */}
-                <Text fontSize="sm"> {item.introduction}</Text>
-              </Box>
+            <>
               <Box
-                mb={2}
-                textAlign="left"
-                display="flex"
-                justifyContent="center"
+                key={index}
+                p={4}
+                borderWidth="1px"
+                borderRadius="lg"
+                w="100%"
               >
-                スキル：
-                <List.Root as="ol">
-                  {skills.map((skill, skillIndex) => (
-                    <List.Item key={skillIndex}>{skill.name}</List.Item>
-                  ))}
-                </List.Root>
+                <Heading as="h2" size="md" mb={2}>
+                  {item.name}
+                </Heading>
+                <Box mb={2} textAlign="left">
+                  <Text>自己紹介</Text>
+                  {/* <Box fontSize="sm" dangerouslySetInnerHTML={{ __html: item.introduction }} /> */}
+                  <Text fontSize="sm"> {item.introduction}</Text>
+                </Box>
+                <Box
+                  mb={2}
+                  textAlign="left"
+                  display="flex"
+                  justifyContent="center"
+                >
+                  スキル：
+                  <List.Root as="ol">
+                    {skills.map((skill, skillIndex) => (
+                      <List.Item key={skillIndex}>{skill.name}</List.Item>
+                    ))}
+                  </List.Root>
+                </Box>
+                <Box
+                  mb={2}
+                  textAlign="left"
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <HStack mt={4} gap={4}>
+                    {item.githubId && (
+                      <Link
+                        href={item.githubId}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icon as={FaGithub} w={6} h={6} />
+                      </Link>
+                    )}
+                    {item.qiitaId && (
+                      <Link
+                        href={item.qiitaId}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icon as={SiQiita} w={6} h={6} />
+                      </Link>
+                    )}
+                    {item.xId && (
+                      <Link
+                        href={item.xId}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icon as={FaTwitter} w={6} h={6} />
+                      </Link>
+                    )}
+                  </HStack>
+                </Box>
               </Box>
-              <Box
-                mb={2}
-                textAlign="left"
-                display="flex"
-                justifyContent="center"
+              <Button
+                onClick={handleBack}
+                width="100%"
+                bg="var(--chakra-colors-teal-500)"
+                color="white"
+                _hover={{ bg: "var(--chakra-colors-teal-600)" }}
               >
-                <HStack mt={4} gap={4}>
-                  {item.githubId && (
-                    <Link
-                      href={item.githubId}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Icon as={FaGithub} w={6} h={6} />
-                    </Link>
-                  )}
-                  {item.qiitaId && (
-                    <Link
-                      href={item.qiitaId}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Icon as={SiQiita} w={6} h={6} />
-                    </Link>
-                  )}
-                  {item.xId && (
-                    <Link
-                      href={item.xId}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Icon as={FaTwitter} w={6} h={6} />
-                    </Link>
-                  )}
-                </HStack>
-              </Box>
-            </Box>
+                戻る
+              </Button>
+            </>
           ))
         ) : (
           <Text>No data found for ID: {id}</Text>
