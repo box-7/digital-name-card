@@ -4,26 +4,22 @@ import Card from "../components/Card";
 // デフォルトエクスポートをインポート
 // import Register from "../pages/cards/Register";
 // 名前付きエクスポートをインポート
-import Register  from "../pages/cards/Register";
-
-// 仮のHomeコンポーネントを定義
-const Home: React.FC = () => {
-  return <div>Home</div>;
-};
+import Register from "../pages/cards/Register";
+import TopPage from "../components/TopPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />, // 仮でデフォルトルートを追加
+    element: <TopPage />,
   },
   {
     path: "/cards/:id",
     element: <Card />,
   },
   {
-        path:"/cards/register",
-        element: <Register />
-  }
+    path: "/cards/register",
+    element: <Register />,
+  },
 ]);
 
 const AppRoutes: React.FC = () => {
