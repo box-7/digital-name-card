@@ -110,6 +110,11 @@ const Register: React.FC = () => {
       console.error("Error registering user:", error);
     }
   };
+
+  const handleBack = () => {
+    navigate("/");
+  };
+
   return (
     <>
       {/* <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="lg"> */}
@@ -158,7 +163,9 @@ const Register: React.FC = () => {
                     },
                   })}
                 />
-                {errors.user_id && <p>{errors.user_id.message}</p>}
+                {errors.user_id && (
+                  <Text color="red.500">{errors.user_id.message}</Text>
+                )}
               </Field>
 
               <Field label="お名前 *">
@@ -172,7 +179,9 @@ const Register: React.FC = () => {
                     },
                   })}
                 />
-                {errors.name && <p>{errors.name.message}</p>}
+                {errors.name && (
+                  <Text color="red.500">{errors.name.message}</Text>
+                )}
               </Field>
 
               <Field label="自己紹介 *">
@@ -187,7 +196,9 @@ const Register: React.FC = () => {
                   width="100%"
                   height="100px"
                 />
-                {errors.description && <p>{errors.description.message}</p>}
+                {errors.description && (
+                  <Text color="red.500">{errors.description.message}</Text>
+                )}
               </Field>
 
               <Field label="好きな技術 *">
@@ -206,7 +217,9 @@ const Register: React.FC = () => {
                     ))}
                   </NativeSelectField>
                 </NativeSelectRoot>
-                {errors.favoriteSkill && <p>{errors.favoriteSkill.message}</p>}
+                {errors.favoriteSkill && (
+                  <Text color="red.500">{errors.favoriteSkill.message}</Text>
+                )}
               </Field>
             </Fieldset.Content>
 
@@ -226,8 +239,8 @@ const Register: React.FC = () => {
 
             <Button
               type="submit"
-              variant="surface"
-              colorPalette="teal"
+              variant="solid" 
+              bg="blue"
               size="sm"
             >
               登録
@@ -235,6 +248,16 @@ const Register: React.FC = () => {
           </Fieldset.Root>
         </form>
       </Box>
+      <Button
+        mt={4}
+        onClick={handleBack}
+        width="60%"
+        bg="var(--chakra-colors-teal-500)"
+        color="white"
+        _hover={{ bg: "var(--chakra-colors-teal-600)" }}
+      >
+        戻る
+      </Button>
     </>
   );
 };
