@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 const TopPage: React.FC = () => {
   const [id, setId] = useState("");
   const [error, setError] = useState("");
+//  React Routerのフック
+// プログラム的にページ遷移を行う関数を提供
+// コンポーネント内で、navigate('/path')で任意のページに遷移可能
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
