@@ -2,7 +2,9 @@ import React from "react";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import TopPage from "../components/TopPage";
 import { BrowserRouter as Router } from "react-router-dom";
-import { MemoryRouter, useNavigate } from "react-router-dom"; // MemoryRouter をインポート
+// メモリ内でルーティングを管理するためのコンポーネント
+// テスト環境で使用され、ブラウザのURLを変更せずにルーティングをシミュレート
+import { MemoryRouter } from "react-router-dom"; // MemoryRouter をインポート
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 // Jest のモック関数
@@ -56,6 +58,43 @@ it("IDを入力してボタンを押すと /cards/:id に遷移する", async ()
     "ナビゲーションが呼び出されたURL [0][0]:",
     mockedUsedNavigate.mock.calls[0][0]
   );
+});
+
+it("IDを入力しないでボタンを押すとエラーメッセージが表示される", async () => {
+  render(
+    <ChakraProvider value={defaultSystem}>
+      <MemoryRouter>
+        <TopPage />
+      </MemoryRouter>
+    </ChakraProvider>
+  );
+
+  // ボタンをクリック
+  fireEvent.click(screen.getByText("名刺をみる"));
+
+  // エラーメッセージを確認
+  await waitFor(() => {
+    expect(screen.getByText("IDは必須です")).toBeInTheDocument();
+  });
+
+  // navigateが呼び出されていないことを確認
+  expect(mockedUsedNavigate).not.toHaveBeenCalled();
+});
+
+it("登録ページへを押すと /cards/registerに遷移する", async () => {
+  render(
+    <ChakraProvider value={defaultSystem}>
+      <MemoryRouter>
+        <TopPage />
+      </MemoryRouter>
+    </ChakraProvider>
+  );
+
+  fireEvent.click(screen.getByText("新規登録はこちら"));
+
+  await waitFor(() => {
+    expect(mockedUsedNavigate).toHaveBeenCalledWith("/cards/register");
+  });
 });
 
 it("タイトルをレンダリングする", async () => {

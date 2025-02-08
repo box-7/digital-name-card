@@ -6,12 +6,16 @@ import { useNavigate } from "react-router-dom";
 const TopPage: React.FC = () => {
   const [id, setId] = useState("");
   const [error, setError] = useState("");
-//  React Routerのフック
-// プログラム的にページ遷移を行う関数を提供
-// コンポーネント内で、navigate('/path')で任意のページに遷移可能
+  //  React Routerのフック
+  // プログラム的にページ遷移を行う関数を提供
+  // コンポーネント内で、navigate('/path')で任意のページに遷移可能
   const navigate = useNavigate();
 
+  //   eがフォーム送信イベントであることを示す
+  // TypeScriptがイベントオブジェクトのプロパティやメソッドを正しく認識し、型安全にコードを書くことができる
   const handleSubmit = (e: React.FormEvent) => {
+    // フォームが送信されたときにページがリロードされるのを防ぐ
+    // フォーム送信時にカスタムバリデーションや非同期処理などを実行するための準備をする
     e.preventDefault();
     if (!id) {
       setError("IDは必須です");
@@ -66,7 +70,7 @@ const TopPage: React.FC = () => {
       </Box>
 
       <Link onClick={handleNavigate} mt={4}>
-        登録ページへ
+        新規登録はこちら
       </Link>
     </>
   );
