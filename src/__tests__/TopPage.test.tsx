@@ -78,7 +78,9 @@ it("IDを入力しないでボタンを押すとエラーメッセージが表�
   });
 
   // navigateが呼び出されていないことを確認
-  expect(mockedUsedNavigate).not.toHaveBeenCalled();
+  await waitFor(() => {
+    expect(mockedUsedNavigate).not.toHaveBeenCalled();
+  });
 });
 
 it("登録ページへを押すと /cards/registerに遷移する", async () => {
