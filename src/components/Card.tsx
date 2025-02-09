@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import supabase from "../../supabase";
 import {
   Box,
@@ -123,12 +123,11 @@ const Card: React.FC = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       {data.length > 0 ? (
         data.map((item, index) => (
-          <>
+          <Fragment key={index}>
             <Box
-              key={index}
               maxW="3xl" //最大幅を指定する方法がうまく行かない
               mx="auto"
               mt={8}
@@ -205,7 +204,7 @@ const Card: React.FC = () => {
             >
               戻る
             </Button>
-          </>
+          </Fragment>
         ))
       ) : (
         <>
@@ -215,6 +214,7 @@ const Card: React.FC = () => {
 
           <Box display="flex" justifyContent="center" width="100%">
             <Button
+              mt={4}
               onClick={handleBack}
               width="60%"
               bg="var(--chakra-colors-teal-500)"
@@ -226,7 +226,7 @@ const Card: React.FC = () => {
           </Box>
         </>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
