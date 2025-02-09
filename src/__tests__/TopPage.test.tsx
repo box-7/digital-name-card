@@ -8,17 +8,16 @@ import { MemoryRouter } from "react-router-dom"; // MemoryRouter をインポー
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 // Jest のモック関数
-// jest.fn()は、呼び出されたことの確認、呼び出し回数や引数を記録できる特殊な関数
+// jest.fn()は、呼び出されたことの確認、呼び出し回数や引数を記録できる
 const mockedUsedNavigate = jest.fn();
 
 // react-router-domモジュールを部分的にモック化
-// import { useNavigate } from "react-router-dom";の部分をモック化
+// (import { useNavigate } from "react-router-dom";の部分)
 jest.mock("react-router-dom", () => ({
   // 元のモジュールの他の機能は保持
   ...jest.requireActual("react-router-dom"),
   // テスト時に、useNavigate()を呼び出すと、mockedUsedNavigateが返される
-  // (front側はnavigate(`/cards/${id}`)になっている)
-  // jest.fn()は引数も保持できる
+  // (front側はnavigate(`/cards/${id}`))
   useNavigate: () => mockedUsedNavigate,
 }));
 
@@ -32,7 +31,7 @@ it("IDを入力してボタンを押すと /cards/:id に遷移する", async ()
   );
 
   //  target.valueに入力値を指定
-  // この例では、IDフィールドに'123'を入力
+  // この例: IDフィールドに'123'を入力
   fireEvent.change(screen.getByLabelText("ID:"), { target: { value: "123" } });
 
   fireEvent.click(screen.getByText("名刺をみる"));
