@@ -206,6 +206,7 @@ const Card: React.FC = () => {
               bg="var(--chakra-colors-teal-500)"
               color="white"
               _hover={{ bg: "var(--chakra-colors-teal-600)" }}
+               data-testid="back-button"
             >
               戻る
             </Button>
@@ -225,6 +226,7 @@ const Card: React.FC = () => {
               bg="var(--chakra-colors-teal-500)"
               color="white"
               _hover={{ bg: "var(--chakra-colors-teal-600)" }}
+              data-testid="back-button"
             >
               戻る
             </Button>
