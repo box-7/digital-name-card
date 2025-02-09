@@ -135,14 +135,16 @@ const Card: React.FC = () => {
               borderWidth={1}
               borderRadius="lg"
             >
-              <Heading as="h2" size="md" mb={2}>
+              <Heading as="h2" size="md" mb={2} data-testid="name-text">
                 {item.name}
               </Heading>
               <Box mb={2} textAlign="left">
                 <Text fontSize="sm">自己紹介</Text>
                 {/* htmlを直接書くためのコード */}
                 {/* <Box fontSize="sm" dangerouslySetInnerHTML={{ __html: item.introduction }} /> */}
-                <Text fontSize="sm"> {item.introduction}</Text>
+                <Text fontSize="sm" data-testid="introduction-text">
+                  {item.introduction}
+                </Text>
               </Box>
               <Box
                 mb={2}
@@ -153,7 +155,9 @@ const Card: React.FC = () => {
                 スキル：
                 <List.Root as="ol">
                   {skills.map((skill, skillIndex) => (
-                    <List.Item key={skillIndex}>{skill.name}</List.Item>
+                    <List.Item key={skillIndex} data-testid="skill">
+                      {skill.name}
+                    </List.Item>
                   ))}
                 </List.Root>
               </Box>
@@ -168,6 +172,7 @@ const Card: React.FC = () => {
                     <Link
                       href={item.githubId}
                       target="_blank"
+                      // セキュリティとプライバシーのために、リンク先のページが window.opener にアクセスできないようにし、リファラ情報を送信しないようにする
                       rel="noopener noreferrer"
                     >
                       <Icon as={FaGithub} w={6} h={6} />
