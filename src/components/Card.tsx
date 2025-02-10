@@ -175,7 +175,7 @@ const Card: React.FC = () => {
                       // セキュリティとプライバシーのために、リンク先のページが window.opener にアクセスできないようにし、リファラ情報を送信しないようにする
                       rel="noopener noreferrer"
                     >
-                      <Icon as={FaGithub} w={6} h={6} />
+                      <Icon as={FaGithub} w={6} h={6} data-testid="github-icon" />
                     </Link>
                   )}
                   {item.qiitaId && (
@@ -184,7 +184,7 @@ const Card: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Icon as={SiQiita} w={6} h={6} />
+                      <Icon as={SiQiita} w={6} h={6} data-testid="qiita-icon" />
                     </Link>
                   )}
                   {item.xId && (
@@ -193,7 +193,7 @@ const Card: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Icon as={FaTwitter} w={6} h={6} />
+                      <Icon as={FaTwitter} w={6} h={6} data-testid="x-icon" />
                     </Link>
                   )}
                 </HStack>

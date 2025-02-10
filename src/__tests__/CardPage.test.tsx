@@ -97,4 +97,55 @@ describe("Cardページの確認", () => {
       expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
     });
   });
+
+  test("GitHubのアイコンが表示されている", async () => {
+        render(
+          <ChakraProvider value={defaultSystem}>
+            <MemoryRouter initialEntries={["/cards/sample_id"]}>
+              <Routes>
+                <Route path="/cards/:id" element={<Card />} />
+              </Routes>
+            </MemoryRouter>
+          </ChakraProvider>
+        );
+    
+        await waitFor(() => {
+          const githubIcon = screen.getByTestId("github-icon");
+          expect(githubIcon).toBeInTheDocument();
+        });
+      });
+
+      test("Twitterのアイコンが表示されている", async () => {
+        render(
+          <ChakraProvider value={defaultSystem}>
+            <MemoryRouter initialEntries={["/cards/sample_id"]}>
+              <Routes>
+                <Route path="/cards/:id" element={<Card />} />
+              </Routes>
+            </MemoryRouter>
+          </ChakraProvider>
+        );
+    
+        await waitFor(() => {
+          const qiitaIcon = screen.getByTestId("qiita-icon");
+          expect(qiitaIcon).toBeInTheDocument();
+        });
+      });
+
+  test("Twitterのアイコンが表示されている", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+          <Routes>
+            <Route path="/cards/:id" element={<Card />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    await waitFor(() => {
+      const xIcon = screen.getByTestId("x-icon");
+      expect(xIcon).toBeInTheDocument();
+    });
+  });
 });
