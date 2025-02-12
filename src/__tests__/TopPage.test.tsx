@@ -49,14 +49,14 @@ it("IDを入力してボタンを押すと /cards/:id に遷移する", async ()
   });
 
   // mockedUsedNavigate.mock.calls: モック関数が呼び出された際の引数のリストを保持する配列
-  console.log(
-    "ナビゲーションが呼び出されたURL [0]:",
-    mockedUsedNavigate.mock.calls[0]
-  );
-  console.log(
-    "ナビゲーションが呼び出されたURL [0][0]:",
-    mockedUsedNavigate.mock.calls[0][0]
-  );
+//   console.log(
+//     "ナビゲーションが呼び出されたURL [0]:",
+//     mockedUsedNavigate.mock.calls[0]
+//   );
+//   console.log(
+//     "ナビゲーションが呼び出されたURL [0][0]:",
+//     mockedUsedNavigate.mock.calls[0][0]
+//   );
 });
 
 it("IDを入力しないでボタンを押すとエラーメッセージが表示される", async () => {

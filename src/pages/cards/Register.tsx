@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../../../supabase";
-import {
-  Box,
-  Button,
-  // FormControl,
-  // FormLabel,
-  Input,
-  // Select,
-  Textarea,
-  Stack,
-  // SelectItem,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Input, Textarea, Stack, Text } from "@chakra-ui/react";
 import {
   NativeSelectField,
   NativeSelectRoot,
-  // NativeSelectItem,
 } from "@/components/ui/native-select";
 
 import { Fieldset } from "@chakra-ui/react";
@@ -73,9 +61,8 @@ const Register: React.FC = () => {
   }, []);
 
   const onSubmit = async (data: FormData) => {
-    // console.log("User registered:", data);
+    console.log("User registered:", data);
     try {
-      // users テーブルにデータを挿入
       const { error: userError } = await supabase.from("users").insert([
         {
           user_id: data.user_id,
@@ -91,7 +78,6 @@ const Register: React.FC = () => {
         throw userError;
       }
 
-      // user_skill テーブルにデータを挿入
       const { error: userSkillError } = await supabase
         .from("user_skill")
         .insert([
@@ -117,7 +103,6 @@ const Register: React.FC = () => {
 
   return (
     <>
-      {/* <Box maxW="md" mx="auto" mt={8} p={4} borderWidth={1} borderRadius="lg"> */}
       <Text fontWeight="bold" fontSize="xl" mb={4} textAlign="center">
         名刺新規登録
       </Text>
@@ -209,6 +194,7 @@ const Register: React.FC = () => {
                       required: "好きな技術は必須入力です。",
                     })}
                     placeholder="選択してください"
+                    data-testid="favorite-skill-select" // ここに data-testid を追加
                   >
                     {skills.map((skill) => (
                       <option key={skill.id} value={skill.id}>
@@ -239,9 +225,10 @@ const Register: React.FC = () => {
 
             <Button
               type="submit"
-              variant="solid" 
+              variant="solid"
               bg="blue"
               size="sm"
+              data-testid="register-button"
             >
               登録
             </Button>
@@ -255,6 +242,7 @@ const Register: React.FC = () => {
         bg="var(--chakra-colors-teal-500)"
         color="white"
         _hover={{ bg: "var(--chakra-colors-teal-600)" }}
+        data-testid="back-button-register"
       >
         戻る
       </Button>

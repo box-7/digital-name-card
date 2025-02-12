@@ -16,7 +16,9 @@ const config: Config = {
 //   testEnvironment: "node",
 //   testEnvironment: "jest-environment-jsdom-sixteen",
   // setupFilesAfterEnv: テスト環境がセットアップされた後に実行されるスクリプトファイルのリストを指定
-  setupFilesAfterEnv: ["./jest.setup.ts"],
+//   setupFilesAfterEnv: ["./jest.setup.ts"],
+ // 上の書き方だと、「全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される」が通らない
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   // JestがTypeScriptファイルをトランスパイル（変換）するための設定
   // 具体的には、ts-jest を使用して .ts や .tsx ファイルをJavaScriptに変換
   transform: {
@@ -53,6 +55,7 @@ const config: Config = {
     ],
   ],
 };
+
 
 export default config;
 

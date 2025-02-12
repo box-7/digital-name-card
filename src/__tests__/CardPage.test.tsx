@@ -15,6 +15,9 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   // テスト時に、useNavigate()を呼び出すと、mockedUsedNavigateが返される
   // (front側はnavigate(`/cards/${id}`))
+
+// navigate 関数はモック化された mockedUsedNavigate 関数であるため、
+// mockedUsedNavigate が "/" ,"/cards/${id}"という引数で呼び出されたことを確認できる
   useNavigate: () => mockedUsedNavigate,
 }));
 
