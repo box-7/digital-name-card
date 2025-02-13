@@ -201,6 +201,21 @@ const Register: React.FC = () => {
                         {skill.name}
                       </option>
                     ))}
+
+                    {/* {skills.map((skill) => {
+                      console.log(
+                        `Skill ID: ${skill.id}, Skill Name: ${skill.name}`
+                      );
+                      console.log(
+                        "ああああああああああああああああああああああああ"
+                      );
+                      // テスト側でuser.selectOptionsでidを使う場合、<option value={skill.id}>が必要とのことだがidを使えない
+                      return (
+                        <option key={skill.id} value={skill.id}>
+                          {skill.name}
+                        </option>
+                      );
+                    })} */}
                   </NativeSelectField>
                 </NativeSelectRoot>
                 {errors.favoriteSkill && (
