@@ -53,7 +53,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   await user.type(screen.getByLabelText("X ID"), "x");
 
   // optionを選択する方法は、他と異なる
-  await act(async () => {
+  await act(() => {
     // user.selectOptions(screen.getByTestId("favorite-skill-select"), '2');  // idではうまくいかない
     user.selectOptions(screen.getByTestId("favorite-skill-select"), "React");
   });
