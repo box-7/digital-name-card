@@ -27,7 +27,7 @@ jest.mock("react-router-dom", () => ({
 //       .fn()
 //       .mockResolvedValue({ data: [{ user_id: "testuser" }], error: null }),
 //   },
-}));
+// }));
 
 it("全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される", async () => {
   // モックをクリア
