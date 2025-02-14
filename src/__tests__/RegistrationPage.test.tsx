@@ -53,12 +53,6 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   await user.type(screen.getByLabelText("Qiita ID"), "qiita");
   await user.type(screen.getByLabelText("X ID"), "x");
 
-  // optionを選択する方法は、他と異なる
-  await act(() => {
-    // user.selectOptions(screen.getByTestId("favorite-skill-select"), '2');  // idではうまくいかない
-    user.selectOptions(screen.getByTestId("favorite-skill-select"), "1");
-  });
-
   //  await waitForの目的:
   // 非同期操作が完了するまで待機
   // その後にアサーションを実行
@@ -73,7 +67,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
     // Promiseが解決または拒否されるまで待機
     // Promiseが解決されると、その結果を返す
     // awaitは、async関数内でのみ使用できる
-    await user.selectOptions(selectElement, "React");
+    await user.selectOptions(selectElement, "1"); // "1"は"React"でもOK
   });
 
   const registerButton = await waitFor(() =>
@@ -84,14 +78,9 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // Reactの状態やエフェクトが更新される操作をラップし、その後のレンダリングが完了するまで待機
   // 主に、状態の変更やエフェクトの実行を伴う操作をテストするために使用される
   await act(async () => {
-    // fireEvent.click(registerButton); // fireEvent.clickはうまくいく
-    // await user.click(registerButton); // ダメ
     await waitFor(() => {
       user.click(registerButton);
     });
-    // await waitFor(() => { //ここだとalertが出る
-    //         expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-    // });
   });
   await waitFor(() => {
     expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
