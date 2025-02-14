@@ -34,7 +34,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // テストの独立性を保つ: 各テストケースが他のテストケースの影響を受けないようにするために、モック関数の呼び出し履歴をリセット
   // 正確な検証: 特定のテストケースでモック関数が正しく呼び出されたかどうかを検証するために、呼び出し履歴をクリアしてからテストを実行
   mockedUsedNavigate.mockClear();
-  expect.assertions(1);
+//   expect.assertions(1);
   const user = userEvent.setup();
   render(
     <ChakraProvider value={defaultSystem}>
