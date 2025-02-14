@@ -19,21 +19,22 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockedUsedNavigate,
 }));
 
-// jest.mock("supabase", () => ({
-//         ...jest.requireActual("supabase"),
-//         // from: jest.fn(() => ({
-//                 insert: jest.fn(() => ({
-//                         data: [{ user_id: "testuser" }],
-//                         error: null,
-//                 })),
-//         // })),
-// }));
+// jest.mock("../../supabase", () => ({
+//   __esModule: true,
+//   default: {
+//     from: jest.fn().mockReturnThis(),
+//     insert: jest
+//       .fn()
+//       .mockResolvedValue({ data: [{ user_id: "testuser" }], error: null }),
+//   },
+}));
 
 it("全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される", async () => {
   // モックをクリア
   // テストの独立性を保つ: 各テストケースが他のテストケースの影響を受けないようにするために、モック関数の呼び出し履歴をリセット
   // 正確な検証: 特定のテストケースでモック関数が正しく呼び出されたかどうかを検証するために、呼び出し履歴をクリアしてからテストを実行
   mockedUsedNavigate.mockClear();
+  expect.assertions(1);
   const user = userEvent.setup();
   render(
     <ChakraProvider value={defaultSystem}>
@@ -55,7 +56,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // optionを選択する方法は、他と異なる
   await act(() => {
     // user.selectOptions(screen.getByTestId("favorite-skill-select"), '2');  // idではうまくいかない
-    user.selectOptions(screen.getByTestId("favorite-skill-select"), "React");
+    user.selectOptions(screen.getByTestId("favorite-skill-select"), "1");
   });
 
   //  await waitForの目的:
@@ -95,12 +96,6 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   await waitFor(() => {
     expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
   });
-  // Supabaseにデータが登録されたことを確認する
-  // const { data, error } = await supabase.from("users").select("*").eq("user_id", "testuser");
-  // expect(error).toBeNull();
-  // console.log("data:", data);
-  // expect(data).toHaveLength(1);
-  // expect(data[0].name).toBe("xxxテスト太郎");
 });
 
 describe("RegistrationPage.test.tsxの全体をテストする", () => {
