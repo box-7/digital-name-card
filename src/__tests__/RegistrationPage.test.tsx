@@ -35,7 +35,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // 正確な検証: 特定のテストケースでモック関数が正しく呼び出されたかどうかを検証するために、呼び出し履歴をクリアしてからテストを実行
   mockedUsedNavigate.mockClear();
   // expect.assertions(1);
-  const user = userEvent.setup();
+
   render(
     <ChakraProvider value={defaultSystem}>
       <MemoryRouter initialEntries={["/cards/register"]}>
@@ -45,17 +45,6 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
       </MemoryRouter>
     </ChakraProvider>
   );
-
-  // await:
-  // Promiseが解決または拒否されるまで待機
-  // Promiseが解決されると、その結果を返す
-  // awaitは、async関数内でのみ使用できる
-  // await user.type(screen.getByLabelText(/好きな英単語/i), "testuserk");
-  // await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
-  // await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
-  // await user.type(screen.getByLabelText("GitHub ID"), "github");
-  // await user.type(screen.getByLabelText("Qiita ID"), "qiita");
-  // await user.type(screen.getByLabelText("X ID"), "x");
 
   fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
     target: { value: "testusern" },
@@ -74,14 +63,6 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   });
   fireEvent.change(screen.getByLabelText("X ID"), { target: { value: "x" } });
 
-  // await waitFor(() => {
-  //         const selectElement = screen.getByTestId("favorite-skill-select") as HTMLSelectElement;
-  //         expect(selectElement.options.length).toBeGreaterThan(1); // 選択肢が読み込まれるまで待つ
-  // }, { timeout: 5000 });
-
-  // const selectElement = screen.getByTestId("favorite-skill-select");
-  // await user.selectOptions(selectElement, "1");
-
   await waitFor(() => {
     const selectElement = screen.getByTestId(
       "favorite-skill-select"
@@ -93,6 +74,41 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
     "favorite-skill-select"
   ) as HTMLSelectElement;
   fireEvent.change(selectElement, { target: { value: "1" } });
+
+  const registerButton = await waitFor(() =>
+    screen.getByTestId("register-button")
+  );
+
+  //   screen.debug();
+
+  await act(async () => {
+    await waitFor(() => {
+      fireEvent.click(registerButton);
+    });
+  });
+
+  // userEventの書き方
+
+  // const user = userEvent.setup();
+
+  // await:
+  // Promiseが解決または拒否されるまで待機
+  // Promiseが解決されると、その結果を返す
+  // awaitは、async関数内でのみ使用できる
+  // await user.type(screen.getByLabelText(/好きな英単語/i), "testuserk");
+  // await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
+  // await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
+  // await user.type(screen.getByLabelText("GitHub ID"), "github");
+  // await user.type(screen.getByLabelText("Qiita ID"), "qiita");
+  // await user.type(screen.getByLabelText("X ID"), "x");
+
+  // await waitFor(() => {
+  //         const selectElement = screen.getByTestId("favorite-skill-select") as HTMLSelectElement;
+  //         expect(selectElement.options.length).toBeGreaterThan(1); // 選択肢が読み込まれるまで待つ
+  // }, { timeout: 5000 });
+
+  // const selectElement = screen.getByTestId("favorite-skill-select");
+  // await user.selectOptions(selectElement, "1");
 
   // await act
   // Reactの状態やエフェクトが更新される操作をラップし、その後のレンダリングが完了するまで待機
@@ -117,18 +133,6 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   //         });
   // });
 
-  const registerButton = await waitFor(() =>
-    screen.getByTestId("register-button")
-  );
-
-//   screen.debug();
-
-  await act(async () => {
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
-  });
-
   //  await waitFor
   // 目的:
   // 非同期操作が完了するまで待機
@@ -138,12 +142,13 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // 使用方法:
   // waitForは、指定されたコールバック関数が成功するまで繰り返し実行される
   // タイムアウトやインターバルを設定することもできる
-  await waitFor(() => {
-          expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-  }, { timeout: 5000 });
-//   await waitFor(() => {
-//     expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-//   });
+  //タイムアウトを設定しないと、エラーになる
+  await waitFor(
+    () => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+    },
+    { timeout: 5000 }
+  );
 });
 
 describe("RegistrationPage.test.tsxの全体をテストする", () => {
