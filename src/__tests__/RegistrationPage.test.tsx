@@ -58,7 +58,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // await user.type(screen.getByLabelText("X ID"), "x");
 
   fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-    target: { value: "testuserl" },
+    target: { value: "testuserm" },
   });
   fireEvent.change(screen.getByLabelText(/お名前/i), {
     target: { value: "xxxテスト太郎" },
@@ -138,12 +138,12 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // 使用方法:
   // waitForは、指定されたコールバック関数が成功するまで繰り返し実行される
   // タイムアウトやインターバルを設定することもできる
-  // await waitFor(() => {
-  //         expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-  // }, { timeout: 5000 });
   await waitFor(() => {
-    expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-  });
+          expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+  }, { timeout: 5000 });
+//   await waitFor(() => {
+//     expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+//   });
 });
 
 describe("RegistrationPage.test.tsxの全体をテストする", () => {
