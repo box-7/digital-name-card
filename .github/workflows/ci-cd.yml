@@ -7,11 +7,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # GitHub Actions の UI から手動で実行するためのトリガー
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # ジョブを実行するランナーの環境を指定
+    runs-on: ubuntu-latest
     env :
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
@@ -44,11 +44,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      # - uses: actions/setup-node@v4  # これを追加 // 追加せずにエラー解決できた firebase.jsonの問題だった
-      #   with:
-      #     node-version: '20'
-      # - name: Install dependencies  # これも追加
-      #   run: npm install
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
