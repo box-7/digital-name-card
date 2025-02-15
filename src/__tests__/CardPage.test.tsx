@@ -16,8 +16,8 @@ jest.mock("react-router-dom", () => ({
   // テスト時に、useNavigate()を呼び出すと、mockedUsedNavigateが返される
   // (front側はnavigate(`/cards/${id}`))
 
-// navigate 関数はモック化された mockedUsedNavigate 関数であるため、
-// mockedUsedNavigate が "/" ,"/cards/${id}"という引数で呼び出されたことを確認できる
+  // navigate 関数はモック化された mockedUsedNavigate 関数であるため、
+  // mockedUsedNavigate が "/" ,"/cards/${id}"という引数で呼び出されたことを確認できる
   useNavigate: () => mockedUsedNavigate,
 }));
 
@@ -53,7 +53,7 @@ describe("Cardページの確認", () => {
 
     await waitFor(() => {
       const introductionText = screen.getByTestId("introduction-text");
-// console.log("introductionText:", introductionText.textContent);
+      // console.log("introductionText:", introductionText.textContent);
       // textareaの内容だから、toBeInTheDocument()は使えない?
       // expect(introductionText.textContent).toBeInTheDocument();
       expect(introductionText.textContent).toBe("Reactを学習しています");
@@ -71,12 +71,14 @@ describe("Cardページの確認", () => {
       </ChakraProvider>
     );
 
-    await waitFor(() => {
-      const skillText = screen.getByTestId("skill");
+    await waitFor(async () => {
+      const skillText = await screen.getByTestId("skill");
       // console.log("skillText:", skillText.textContent);
       // memoizedProps: 現在のレンダリング結果を保持しているプロパティであり、通常は textContent に対応します。
       // console.log("skillText:", skillText);
-      expect(skillText.textContent).toBe("React");
+      await waitFor(async () => {
+        expect(skillText.textContent).toBe("React");
+      });
     });
   });
 
@@ -102,38 +104,38 @@ describe("Cardページの確認", () => {
   });
 
   test("GitHubのアイコンが表示されている", async () => {
-        render(
-          <ChakraProvider value={defaultSystem}>
-            <MemoryRouter initialEntries={["/cards/sample_id"]}>
-              <Routes>
-                <Route path="/cards/:id" element={<Card />} />
-              </Routes>
-            </MemoryRouter>
-          </ChakraProvider>
-        );
-    
-        await waitFor(() => {
-          const githubIcon = screen.getByTestId("github-icon");
-          expect(githubIcon).toBeInTheDocument();
-        });
-      });
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+          <Routes>
+            <Route path="/cards/:id" element={<Card />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
 
-      test("Twitterのアイコンが表示されている", async () => {
-        render(
-          <ChakraProvider value={defaultSystem}>
-            <MemoryRouter initialEntries={["/cards/sample_id"]}>
-              <Routes>
-                <Route path="/cards/:id" element={<Card />} />
-              </Routes>
-            </MemoryRouter>
-          </ChakraProvider>
-        );
-    
-        await waitFor(() => {
-          const qiitaIcon = screen.getByTestId("qiita-icon");
-          expect(qiitaIcon).toBeInTheDocument();
-        });
-      });
+    await waitFor(() => {
+      const githubIcon = screen.getByTestId("github-icon");
+      expect(githubIcon).toBeInTheDocument();
+    });
+  });
+
+  test("Twitterのアイコンが表示されている", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+          <Routes>
+            <Route path="/cards/:id" element={<Card />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    await waitFor(() => {
+      const qiitaIcon = screen.getByTestId("qiita-icon");
+      expect(qiitaIcon).toBeInTheDocument();
+    });
+  });
 
   test("Twitterのアイコンが表示されている", async () => {
     render(

@@ -58,7 +58,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
   // await user.type(screen.getByLabelText("X ID"), "x");
 
   fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-    target: { value: "testuserm" },
+    target: { value: "testusern" },
   });
   fireEvent.change(screen.getByLabelText(/お名前/i), {
     target: { value: "xxxテスト太郎" },
@@ -121,7 +121,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
     screen.getByTestId("register-button")
   );
 
-  screen.debug();
+//   screen.debug();
 
   await act(async () => {
     await waitFor(() => {
