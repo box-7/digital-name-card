@@ -46,23 +46,26 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
                 </ChakraProvider>
         );
 
+        // await:
+        // Promiseが解決または拒否されるまで待機
+        // Promiseが解決されると、その結果を返す
+        // awaitは、async関数内でのみ使用できる
+        await user.type(screen.getByLabelText(/好きな英単語/i), "testuserf");
+        await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
+        await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
+        await user.type(screen.getByLabelText("GitHub ID"), "github");
+        await user.type(screen.getByLabelText("Qiita ID"), "qiita");
+        await user.type(screen.getByLabelText("X ID"), "x");
+
         // await act
         // Reactの状態やエフェクトが更新される操作をラップし、その後のレンダリングが完了するまで待機
         // 主に、状態の変更やエフェクトの実行を伴う操作をテストするために使用される
+        // selectOptionsは、以下の書き方にする必要がある
         await act(async () => {
-                // await:
-                // Promiseが解決または拒否されるまで待機
-                // Promiseが解決されると、その結果を返す
-                // awaitは、async関数内でのみ使用できる
-                await user.type(screen.getByLabelText(/好きな英単語/i), "testuserd");
-                await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
-                await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
-                await user.type(screen.getByLabelText("GitHub ID"), "github");
-                await user.type(screen.getByLabelText("Qiita ID"), "qiita");
-                await user.type(screen.getByLabelText("X ID"), "x");
-
-                const selectElement = screen.getByTestId("favorite-skill-select");
-                await user.selectOptions(selectElement, "1"); // "1"は"React"でもOK
+                await waitFor(() => {
+                        const selectElement = screen.getByTestId("favorite-skill-select");
+                        user.selectOptions(selectElement, "1"); // "1"は"React"でもOK
+                });
         });
 
         const registerButton = await waitFor(() =>
