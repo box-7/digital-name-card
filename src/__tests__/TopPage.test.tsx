@@ -36,9 +36,9 @@ it("IDを入力してボタンを押すと /cards/:id に遷移する", async ()
 
   fireEvent.click(screen.getByText("名刺をみる"));
 
-  await waitFor(() => {
-    console.log("mockedUsedNavigate:", mockedUsedNavigate);
-  });
+//   await waitFor(() => {
+//     console.log("mockedUsedNavigate:", mockedUsedNavigate);
+//   });
 
   // フロント側の以下と対応
   // import { useNavigate } from "react-router-dom";

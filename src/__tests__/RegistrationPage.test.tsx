@@ -34,7 +34,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
         // テストの独立性を保つ: 各テストケースが他のテストケースの影響を受けないようにするために、モック関数の呼び出し履歴をリセット
         // 正確な検証: 特定のテストケースでモック関数が正しく呼び出されたかどうかを検証するために、呼び出し履歴をクリアしてからテストを実行
         mockedUsedNavigate.mockClear();
-        //   expect.assertions(1);
+        // expect.assertions(1);
         const user = userEvent.setup();
         render(
                 <ChakraProvider value={defaultSystem}>
@@ -46,27 +46,22 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
                 </ChakraProvider>
         );
 
-        await user.type(screen.getByLabelText(/好きな英単語/i), "testuserd");
-        await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
-        await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
-        await user.type(screen.getByLabelText("GitHub ID"), "github");
-        await user.type(screen.getByLabelText("Qiita ID"), "qiita");
-        await user.type(screen.getByLabelText("X ID"), "x");
-
-        //  await waitForの目的:
-        // 非同期操作が完了するまで待機
-        // その後にアサーションを実行
-        // 主に、非同期で更新されるDOM要素の存在を確認するために使用される。
-
-        // 使用方法:
-        // waitForは、指定されたコールバック関数が成功するまで繰り返し実行される
-        // タイムアウトやインターバルを設定することもできる
-        await waitFor(async () => {
-                const selectElement = screen.getByTestId("favorite-skill-select");
+        // await act
+        // Reactの状態やエフェクトが更新される操作をラップし、その後のレンダリングが完了するまで待機
+        // 主に、状態の変更やエフェクトの実行を伴う操作をテストするために使用される
+        await act(async () => {
                 // await:
                 // Promiseが解決または拒否されるまで待機
                 // Promiseが解決されると、その結果を返す
                 // awaitは、async関数内でのみ使用できる
+                await user.type(screen.getByLabelText(/好きな英単語/i), "testuserd");
+                await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
+                await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
+                await user.type(screen.getByLabelText("GitHub ID"), "github");
+                await user.type(screen.getByLabelText("Qiita ID"), "qiita");
+                await user.type(screen.getByLabelText("X ID"), "x");
+
+                const selectElement = screen.getByTestId("favorite-skill-select");
                 await user.selectOptions(selectElement, "1"); // "1"は"React"でもOK
         });
 
@@ -74,21 +69,24 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
                 screen.getByTestId("register-button")
         );
 
-        // await act
-        // Reactの状態やエフェクトが更新される操作をラップし、その後のレンダリングが完了するまで待機
-        // 主に、状態の変更やエフェクトの実行を伴う操作をテストするために使用される
         await act(async () => {
                 await waitFor(() => {
                         user.click(registerButton);
                 });
-
         });
 
-        // await act(async () => {
-                await waitFor(() => {
-                        expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-                }, { timeout: 5000 });
-        // });
+        //  await waitFor
+        // 目的:
+        // 非同期操作が完了するまで待機
+        // その後にアサーションを実行
+        // 主に、非同期で更新されるDOM要素の存在を確認するために使用される。
+
+        // 使用方法:
+        // waitForは、指定されたコールバック関数が成功するまで繰り返し実行される
+        // タイムアウトやインターバルを設定することもできる
+        await waitFor(() => {
+                expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+        }, { timeout: 5000 });
 
 });
 

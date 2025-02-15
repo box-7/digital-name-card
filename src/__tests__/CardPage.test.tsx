@@ -53,7 +53,7 @@ describe("Cardページの確認", () => {
 
     await waitFor(() => {
       const introductionText = screen.getByTestId("introduction-text");
-      console.log("introductionText:", introductionText.textContent);
+// console.log("introductionText:", introductionText.textContent);
       // textareaの内容だから、toBeInTheDocument()は使えない?
       // expect(introductionText.textContent).toBeInTheDocument();
       expect(introductionText.textContent).toBe("Reactを学習しています");
