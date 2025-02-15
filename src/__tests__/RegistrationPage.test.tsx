@@ -50,7 +50,7 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
         // Promiseが解決または拒否されるまで待機
         // Promiseが解決されると、その結果を返す
         // awaitは、async関数内でのみ使用できる
-        await user.type(screen.getByLabelText(/好きな英単語/i), "testuserf");
+        await user.type(screen.getByLabelText(/好きな英単語/i), "testuserh");
         await user.type(screen.getByLabelText(/お名前/i), "xxxテスト太郎");
         await user.type(screen.getByLabelText(/自己紹介/i), "xxxを学習しています");
         await user.type(screen.getByLabelText("GitHub ID"), "github");
@@ -62,10 +62,10 @@ it("全項目を入力して登録ボタンを押すと/に遷移し、データ
         // 主に、状態の変更やエフェクトの実行を伴う操作をテストするために使用される
         // selectOptionsは、以下の書き方にする必要がある
         await act(async () => {
+                const selectElement = await screen.getByTestId("favorite-skill-select");
                 await waitFor(() => {
-                        const selectElement = screen.getByTestId("favorite-skill-select");
                         user.selectOptions(selectElement, "1"); // "1"は"React"でもOK
-                });
+                }, { timeout: 5000 });
         });
 
         const registerButton = await waitFor(() =>
