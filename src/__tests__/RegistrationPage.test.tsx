@@ -148,7 +148,7 @@ describe("Register component", () => {
         target: { value: "x" },
       });
 
-      screen.debug();
+//  screen.debug();
     });
 
     await act(async () => {

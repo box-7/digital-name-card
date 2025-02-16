@@ -72,7 +72,8 @@ describe("Cardページの確認", () => {
     );
 
     await waitFor(async () => {
-      const skillText = await screen.getByTestId("skill");
+//  const skillText = await screen.getByTestId("skill"); // GitHub Actionsだとこける
+      const skillText = await waitFor(() => screen.getByTestId("skill"));
       // console.log("skillText:", skillText.textContent);
       // memoizedProps: 現在のレンダリング結果を保持しているプロパティであり、通常は textContent に対応します。
       // console.log("skillText:", skillText);
