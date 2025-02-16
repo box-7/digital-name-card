@@ -10,6 +10,11 @@ import { Fieldset } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import {
+  getSkills,
+  insertUsers,
+  insertUserSkill,
+} from "../../lib/supabaseOperations";
 
 interface Skill {
   id: number;
@@ -49,51 +54,46 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     const fetchSkills = async () => {
-      const { data, error } = await supabase.from("skill").select("*");
-      if (error) {
-        console.error("Error fetching skills:", error);
-      } else {
+      try {
+        const data = await getSkills();
         setSkills(data);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+        alert("スキルの取得に失敗しました。後ほど再試行してください。");
       }
     };
-
     fetchSkills();
   }, []);
 
   const onSubmit = async (data: FormData) => {
     console.log("User registered:", data);
     try {
-      const { error: userError } = await supabase.from("users").insert([
-        {
+      try {
+        await insertUsers({
           user_id: data.user_id,
           name: data.name,
           description: data.description,
           github_id: data.github_id,
           qiita_id: data.qiita_id,
           x_id: data.x_id,
-        },
-      ]);
-
-      if (userError) {
-        throw userError;
+        });
+      } catch (error) {
+        console.error("Error inserting user:", error);
+        alert("ユーザーの登録に失敗しました。後ほど再試行してください。");
       }
 
-      const { error: userSkillError } = await supabase
-        .from("user_skill")
-        .insert([
-          {
-            user_id: data.user_id,
-            skill_id: data.favoriteSkill,
-          },
-        ]);
-
-      if (userSkillError) {
-        throw userSkillError;
+      try {
+        await insertUserSkill({
+          user_id: data.user_id,
+          skill_id: Number(data.favoriteSkill),
+        });
+      } catch (error) {
+        console.error("Error inserting user_skill:", error);
+        alert("ユーザースキルの登録に失敗しました。後ほど再試行してください。");
       }
-      // 登録に成功したらページ遷移
-      navigate("/");
     } catch (error) {
       console.error("Error registering user:", error);
+      alert("ユーザー登録に失敗しました。後ほど再試行してください。");
     }
   };
 
