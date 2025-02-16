@@ -71,16 +71,29 @@ describe("Cardページの確認", () => {
       </ChakraProvider>
     );
 
-    await waitFor(async () => {
-//  const skillText = await screen.getByTestId("skill"); // GitHub Actionsだとこける
-      const skillText = await waitFor(() => screen.getByTestId("skill"));
-      // console.log("skillText:", skillText.textContent);
-      // memoizedProps: 現在のレンダリング結果を保持しているプロパティであり、通常は textContent に対応します。
-      // console.log("skillText:", skillText);
-      await waitFor(async () => {
+    // スキルテキストが表示されるまで待機し、内容を検証
+    await waitFor(
+      () => {
+        const skillText = screen.getByTestId("skill");
+        expect(skillText).toBeInTheDocument();
         expect(skillText.textContent).toBe("React");
-      });
-    });
+      },
+      {
+        timeout: 5000, // タイムアウトを5秒に設定
+        interval: 100, // チェック間隔を100msに設定
+      }
+    );
+
+    //     await waitFor(async () => {
+    // //  const skillText = await screen.getByTestId("skill"); // GitHub Actionsだとこける
+    //       const skillText = await waitFor(() => screen.getByTestId("skill"));
+    //       // console.log("skillText:", skillText.textContent);
+    //       // memoizedProps: 現在のレンダリング結果を保持しているプロパティであり、通常は textContent に対応します。
+    //       // console.log("skillText:", skillText);
+    //       await waitFor(async () => {
+    //         expect(skillText.textContent).toBe("React");
+    //       });
+    // });
   });
 
   test("戻るボタンをクリックすると/に遷移する", async () => {
