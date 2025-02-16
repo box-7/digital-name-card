@@ -66,7 +66,7 @@ const Register: React.FC = () => {
   }, []);
 
   const onSubmit = async (data: FormData) => {
-    console.log("User registered:", data);
+    console.log("User registered----------------------:", data);
     try {
       try {
         await insertUsers({
@@ -87,6 +87,7 @@ const Register: React.FC = () => {
           user_id: data.user_id,
           skill_id: Number(data.favoriteSkill),
         });
+        navigate("/");
       } catch (error) {
         console.error("Error inserting user_skill:", error);
         alert("ユーザースキルの登録に失敗しました。後ほど再試行してください。");
@@ -201,21 +202,6 @@ const Register: React.FC = () => {
                         {skill.name}
                       </option>
                     ))}
-
-                    {/* {skills.map((skill) => {
-                      console.log(
-                        `Skill ID: ${skill.id}, Skill Name: ${skill.name}`
-                      );
-                      console.log(
-                        "ああああああああああああああああああああああああ"
-                      );
-                      // テスト側でuser.selectOptionsでidを使う場合、<option value={skill.id}>が必要とのことだがidを使えない
-                      return (
-                        <option key={skill.id} value={skill.id}>
-                          {skill.name}
-                        </option>
-                      );
-                    })} */}
                   </NativeSelectField>
                 </NativeSelectRoot>
                 {errors.favoriteSkill && (

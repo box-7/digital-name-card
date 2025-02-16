@@ -21,7 +21,7 @@ interface UserSkill {
 
 export const getSkills = async (): Promise<Skill[]> => {
   const { data, error } = await supabase
-    .from("skills")
+    .from("skill")
     .select("*")
     .returns<Skill[]>();
 
