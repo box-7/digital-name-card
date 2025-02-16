@@ -37,7 +37,7 @@ jest.mock("../lib/supabaseOperations", () => ({
 }));
 
 // 目的
-// 以下設定により、insertUsers 関数をモック関数として扱うことができ、テスト内で関数の呼び出しや引数を検証することができる
+// insertUsers 関数をモック関数として扱うことができ、テスト内で関数の呼び出しや引数を検証することができる
 // supabaseOperations.insertUsers  supabaseOperations モジュールからインポートされた insertUsers 関数
 // TypeScriptの型アサーション(as)を使用して、insertUsers 関数を jest.MockedFunction 型に変換
 // jest.MockedFunctionは、Jestのモック関数の型を表す
@@ -101,12 +101,6 @@ describe("Register component", () => {
   });
 
   it("全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される", async () => {
-    // モックをクリア
-    // テストの独立性を保つ: 各テストケースが他のテストケースの影響を受けないようにするために、モック関数の呼び出し履歴をリセット
-    // 正確な検証: 特定のテストケースでモック関数が正しく呼び出されたかどうかを検証するために、呼び出し履歴をクリアしてからテストを実行
-
-    // expect.assertions(1);
-
     render(
       <ChakraProvider value={defaultSystem}>
         <MemoryRouter initialEntries={["/cards/register"]}>
@@ -148,7 +142,7 @@ describe("Register component", () => {
         target: { value: "x" },
       });
 
-//  screen.debug();
+      //  screen.debug();
     });
 
     await act(async () => {
@@ -171,6 +165,290 @@ describe("Register component", () => {
       },
       { timeout: 5000 }
     );
+  });
+
+  it("IDがないときにエラーメッセージがでる", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/register"]}>
+          <Routes>
+            <Route path="/cards/register" element={<Register />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    const selectElement = await waitFor(async () =>
+      screen.getByTestId("favorite-skill-select")
+    );
+
+    await waitFor(
+      async () => {
+        expect(selectElement).toBeInTheDocument();
+      },
+      { timeout: 10000 }
+    );
+
+    await act(async () => {
+      // fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+      //         target: { value: "testusera" },
+      // });
+      fireEvent.change(screen.getByLabelText(/お名前/i), {
+        target: { value: "xxxテスト太郎" },
+      });
+      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+        target: { value: "xxxを学習しています" },
+      });
+      fireEvent.change(screen.getByLabelText("GitHub ID"), {
+        target: { value: "github" },
+      });
+      fireEvent.change(screen.getByLabelText("Qiita ID"), {
+        target: { value: "qiita" },
+      });
+      fireEvent.change(screen.getByLabelText("X ID"), {
+        target: { value: "x" },
+      });
+    });
+
+    await act(async () => {
+      fireEvent.change(selectElement, { target: { value: "1" } });
+    });
+    const registerButton = await waitFor(() =>
+      screen.getByTestId("register-button")
+    );
+
+    await waitFor(() => {
+      fireEvent.click(registerButton);
+    });
+
+    await waitFor(
+      () => {
+        const element = screen.getByText("User IDは必須入力です。");
+        expect(element).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
+  });
+
+  it("名前がないときにエラーメッセージがでる", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/register"]}>
+          <Routes>
+            <Route path="/cards/register" element={<Register />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    const selectElement = await waitFor(async () =>
+      screen.getByTestId("favorite-skill-select")
+    );
+
+    await waitFor(
+      async () => {
+        expect(selectElement).toBeInTheDocument();
+      },
+      { timeout: 10000 }
+    );
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+        target: { value: "testusera" },
+      });
+      // fireEvent.change(screen.getByLabelText(/お名前/i), {
+      //         target: { value: "xxxテスト太郎" },
+      // });
+      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+        target: { value: "xxxを学習しています" },
+      });
+      fireEvent.change(screen.getByLabelText("GitHub ID"), {
+        target: { value: "github" },
+      });
+      fireEvent.change(screen.getByLabelText("Qiita ID"), {
+        target: { value: "qiita" },
+      });
+      fireEvent.change(screen.getByLabelText("X ID"), {
+        target: { value: "x" },
+      });
+    });
+
+    await act(async () => {
+      fireEvent.change(selectElement, { target: { value: "1" } });
+    });
+    const registerButton = await waitFor(() =>
+      screen.getByTestId("register-button")
+    );
+
+    await waitFor(() => {
+      fireEvent.click(registerButton);
+    });
+
+    await waitFor(
+      () => {
+        const element = screen.getByText("お名前は必須入力です。");
+        expect(element).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
+  });
+
+  it("紹介文がないときにエラーメッセージがでる", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/register"]}>
+          <Routes>
+            <Route path="/cards/register" element={<Register />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    const selectElement = await waitFor(async () =>
+      screen.getByTestId("favorite-skill-select")
+    );
+
+    await waitFor(
+      async () => {
+        expect(selectElement).toBeInTheDocument();
+      },
+      { timeout: 10000 }
+    );
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+        target: { value: "testusera" },
+      });
+      fireEvent.change(screen.getByLabelText(/お名前/i), {
+        target: { value: "xxxテスト太郎" },
+      });
+      // fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+      //         target: { value: "xxxを学習しています" },
+      // });
+      fireEvent.change(screen.getByLabelText("GitHub ID"), {
+        target: { value: "github" },
+      });
+      fireEvent.change(screen.getByLabelText("Qiita ID"), {
+        target: { value: "qiita" },
+      });
+      fireEvent.change(screen.getByLabelText("X ID"), {
+        target: { value: "x" },
+      });
+    });
+
+    await act(async () => {
+      fireEvent.change(selectElement, { target: { value: "1" } });
+    });
+    const registerButton = await waitFor(() =>
+      screen.getByTestId("register-button")
+    );
+
+    await waitFor(() => {
+      fireEvent.click(registerButton);
+    });
+
+    await waitFor(
+      () => {
+        const element = screen.getByText("自己紹介は必須入力です。");
+        expect(element).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
+  });
+
+  it("オプションを入力しなくても登録ができる", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/register"]}>
+          <Routes>
+            <Route path="/cards/register" element={<Register />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+
+    const selectElement = await waitFor(async () =>
+      screen.getByTestId("favorite-skill-select")
+    );
+
+    await waitFor(
+      async () => {
+        expect(selectElement).toBeInTheDocument();
+      },
+      { timeout: 10000 }
+    );
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+        target: { value: "testusera" },
+      });
+      fireEvent.change(screen.getByLabelText(/お名前/i), {
+        target: { value: "xxxテスト太郎" },
+      });
+      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+        target: { value: "xxxを学習しています" },
+      });
+      // fireEvent.change(screen.getByLabelText("GitHub ID"), {
+      //         target: { value: "github" },
+      // });
+      // fireEvent.change(screen.getByLabelText("Qiita ID"), {
+      //         target: { value: "qiita" },
+      // });
+      // fireEvent.change(screen.getByLabelText("X ID"), {
+      //         target: { value: "x" },
+      // });
+    });
+
+    await act(async () => {
+      fireEvent.change(selectElement, { target: { value: "1" } });
+    });
+    const registerButton = await waitFor(() =>
+      screen.getByTestId("register-button")
+    );
+
+    await waitFor(() => {
+      fireEvent.click(registerButton);
+    });
+
+    await waitFor(
+      () => {
+        expect(mockInsertUsers).toHaveBeenCalled();
+        expect(mockInsertUserSkill).toHaveBeenCalled();
+        expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+      },
+      { timeout: 5000 }
+    );
+  });
+
+  it("タイトルが表示されていることを確認する", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter>
+          <Register />
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+    await waitFor(() => {
+      expect(screen.getByText("名刺新規登録")).toBeInTheDocument();
+    });
+  });
+  test("戻るボタンをクリックすると/に遷移する", async () => {
+    render(
+      <ChakraProvider value={defaultSystem}>
+        <MemoryRouter initialEntries={["/cards/register"]}>
+          <Routes>
+            <Route path="/cards/register" element={<Register />} />
+          </Routes>
+        </MemoryRouter>
+      </ChakraProvider>
+    );
+    await waitFor(() => {
+      const backButtonRegister = screen.getByTestId("back-button-register");
+      fireEvent.click(backButtonRegister);
+    });
+    await waitFor(() => {
+      expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
+    });
   });
 });
 
@@ -236,36 +514,3 @@ describe("Register component", () => {
 //         { timeout: 5000 }
 // );
 // });
-
-describe("RegistrationPage.test.tsxの全体をテストする", () => {
-  it("タイトルが表示されていることを確認する", async () => {
-    render(
-      <ChakraProvider value={defaultSystem}>
-        <MemoryRouter>
-          <Register />
-        </MemoryRouter>
-      </ChakraProvider>
-    );
-    await waitFor(() => {
-      expect(screen.getByText("名刺新規登録")).toBeInTheDocument();
-    });
-  });
-  test("戻るボタンをクリックすると/に遷移する", async () => {
-    render(
-      <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/register"]}>
-          <Routes>
-            <Route path="/cards/register" element={<Register />} />
-          </Routes>
-        </MemoryRouter>
-      </ChakraProvider>
-    );
-    await waitFor(() => {
-      const backButtonRegister = screen.getByTestId("back-button-register");
-      fireEvent.click(backButtonRegister);
-    });
-    await waitFor(() => {
-      expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
-    });
-  });
-});
