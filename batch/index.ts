@@ -1,9 +1,5 @@
-//supabaseをインポートして
+
 import supabase from "../supabase";
-
-// usersテーブル、user_skillテーブル、の内容を削除するコマンドを作って
-
-// githubactionsのワークフローで実行する
 
 export const deleteUsers = async (): Promise<void> => {
   const { error } = await supabase.from("users").delete();

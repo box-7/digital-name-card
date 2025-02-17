@@ -14,7 +14,7 @@
                 "allowJs": false,
                 // "moduleResolution": "node", // ここを変更
                 // ViteプロジェクトでReactとTypeScriptを使用している場合、通常はmoduleResolutionをbundlerに設定することが推奨される
-                "moduleResolution": "Bundler",
+                // "moduleResolution": "Bundler", // 0217修正
                 "allowImportingTsExtensions": true,
                 "isolatedModules": true,
                 "noEmit": true,
@@ -22,7 +22,7 @@
                 // "jsx": "react",
                 "strict": true,
                 "allowSyntheticDefaultImports": true,
-                "esModuleInterop": false,
+                // "esModuleInterop": false,// 0217修正
                 // "esModuleInterop": true,
                 "forceConsistentCasingInFileNames": true,
                 "resolveJsonModule": true,
@@ -31,7 +31,9 @@
                 "baseUrl": ".",
                 "paths": {
                         "@/*": ["./src/*"]
-                }
+                },
+                "moduleResolution": "node", //  0217追加
+                "esModuleInterop": true //  0217追加
         },
         // コンパイル対象のファイルやディレクトリを指定
         "include": ["src"],
