@@ -9,7 +9,7 @@ export const deleteUsers = async (): Promise<void> => {
 };
 
 export const deleteUserSkill = async (): Promise<void> => {
-  const { error } = await supabase.from("user_skill").delete().neq("id", ""); // "id" が空でないすべてのレコードを削除
+  const { error } = await supabase.from("user_skill").delete().neq("user_id", ""); // "id" が空でないすべてのレコードを削除
 
   if (error) {
     throw new Error(`Error deleting user_skill: ${error.message}`);
