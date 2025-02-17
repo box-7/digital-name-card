@@ -1,7 +1,7 @@
 import supabase from "../supabase";
 
 export const deleteUsers = async (): Promise<void> => {
-  const { error } = await supabase.from("users").delete().neq("id", ""); // "id" が空でないすべてのレコードを削除
+  const { error } = await supabase.from("users").delete().neq("user_id", ""); // "id" が空でないすべてのレコードを削除
 
   if (error) {
     throw new Error(`Error deleting users: ${error.message}`);

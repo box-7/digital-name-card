@@ -1,8 +1,8 @@
 name: Schedule delete table content
 on:
   schedule:
-    # 毎日8:00に実行 (UTC 23:00)
-    - cron: '0 23 * * *'
+    # 毎日8:20に実行 (UTC 23:20)
+    - cron: '20 23 * * *'
 jobs:
   cleanup:
     runs-on: ubuntu-latest
