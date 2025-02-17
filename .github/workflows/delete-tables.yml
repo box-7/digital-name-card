@@ -1,8 +1,8 @@
 name: Schedule delete table content
 on:
   schedule:
-# 毎日7:25に実行 (UTC 22:25)
-    - cron: '25 22 * * *'
+    # 毎日7:50に実行 (UTC 22:50)
+    - cron: '50 22 * * *'
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
 
       - name: Run batch script to delete data
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         # run: npx ts-node --esm ./batch/index.ts
         run: npx tsx ./batch/index.ts
