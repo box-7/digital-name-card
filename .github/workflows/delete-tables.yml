@@ -1,7 +1,7 @@
 name: Schedule delete table content
 on:
   schedule:
-    # 毎日9:01に実行 (UTC 24:01)
+    # 毎日22:50に実行 (UTC 24:01)
     - cron: '01 24 * * *'
 jobs:
   cleanup:
