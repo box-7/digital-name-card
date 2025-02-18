@@ -1,5 +1,6 @@
 //  import.meta.envだとテストがエラー
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import 'dotenv/config'
 
 // SupabaseのURLとAPIキーを環境変数から取得
 const supabaseUrl: string = process.env.VITE_SUPABASE_URL as string
