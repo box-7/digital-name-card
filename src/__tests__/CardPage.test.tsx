@@ -25,7 +25,7 @@ describe("Cardページの確認", () => {
   test("名前が表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -43,7 +43,7 @@ describe("Cardページの確認", () => {
   test("自己紹介が表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -63,7 +63,7 @@ describe("Cardページの確認", () => {
   test("技術が表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -99,7 +99,7 @@ describe("Cardページの確認", () => {
   test("戻るボタンをクリックすると/に遷移する", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -120,7 +120,7 @@ describe("Cardページの確認", () => {
   test("GitHubのアイコンが表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -137,7 +137,7 @@ describe("Cardページの確認", () => {
   test("Twitterのアイコンが表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
@@ -154,7 +154,7 @@ describe("Cardページの確認", () => {
   test("Twitterのアイコンが表示されている", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
-        <MemoryRouter initialEntries={["/cards/sample_id"]}>
+        <MemoryRouter initialEntries={["/cards/sample"]}>
           <Routes>
             <Route path="/cards/:id" element={<Card />} />
           </Routes>
