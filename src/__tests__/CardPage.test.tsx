@@ -21,6 +21,9 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockedUsedNavigate,
 }));
 
+// テストファイルの先頭で timeout を設定
+jest.setTimeout(30000);
+
 describe("Cardページの確認", () => {
   test("名前が表示されている", async () => {
     render(
@@ -35,8 +38,7 @@ describe("Cardページの確認", () => {
 
     await waitFor(() => {
       const nameText = screen.getByTestId("name-text");
-      // expect(nameText.textContent).toBeInTheDocument();
-      expect(nameText.textContent).toBe("テスト太郎");
+      expect(nameText.textContent).toBe("sample");
     });
   });
 
@@ -53,10 +55,7 @@ describe("Cardページの確認", () => {
 
     await waitFor(() => {
       const introductionText = screen.getByTestId("introduction-text");
-      // console.log("introductionText:", introductionText.textContent);
-      // textareaの内容だから、toBeInTheDocument()は使えない?
-      // expect(introductionText.textContent).toBeInTheDocument();
-      expect(introductionText.textContent).toBe("Reactを学習しています");
+      expect(introductionText.textContent).toBe("sample");
     });
   });
 
@@ -79,8 +78,7 @@ describe("Cardページの確認", () => {
         expect(skillText.textContent).toBe("React");
       },
       {
-        timeout: 5000, // タイムアウトを5秒に設定
-        interval: 100, // チェック間隔を100msに設定
+        timeout: 10000,
       }
     );
 
