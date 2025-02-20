@@ -15,6 +15,48 @@ import * as supabaseOperations from "../lib/supabaseOperations";
 
 const mockedUsedNavigate = jest.fn();
 
+const fillFormInputs = async () => {
+  await act(async () => {
+    fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+      target: { value: "testusera" },
+    });
+    fireEvent.change(screen.getByLabelText(/お名前/i), {
+      target: { value: "xxxテスト太郎" },
+    });
+    fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+      target: { value: "xxxを学習しています" },
+    });
+    fireEvent.change(screen.getByLabelText("GitHub ID"), {
+      target: { value: "github" },
+    });
+    fireEvent.change(screen.getByLabelText("Qiita ID"), {
+      target: { value: "qiita" },
+    });
+    fireEvent.change(screen.getByLabelText("X ID"), {
+      target: { value: "x" },
+    });
+  });
+};
+
+export const selectFavoriteSkillAndSubmit = async (
+  selectElement: HTMLElement
+) => {
+  await act(async () => {
+    // TypeScriptの型はnumberだが、入力値は文字列で良い
+    fireEvent.change(selectElement, { target: { value: "1" } });
+  });
+
+  const registerButton = await waitFor(() =>
+    screen.getByTestId("register-button")
+  );
+
+  await waitFor(() => {
+    fireEvent.click(registerButton);
+  });
+
+  return registerButton;
+};
+
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockedUsedNavigate,
@@ -36,19 +78,24 @@ jest.mock("../lib/supabaseOperations", () => ({
   ]),
 }));
 
-// 目的
-// insertUsers 関数をモック関数として扱うことができ、テスト内で関数の呼び出しや引数を検証することができる
-// supabaseOperations.insertUsers  supabaseOperations モジュールからインポートされた insertUsers 関数
-// TypeScriptの型アサーション(as)を使用して、insertUsers 関数を jest.MockedFunction 型に変換
+// insertUsers 関数をモック関数として扱う
+//// テスト内で関数の呼び出しや引数を検証することができる
+// supabaseOperations.insertUsersは、モジュールからインポートされた insertUsers 関数
+// TypeScriptの型アサーション(as)を使用
+//// insertUsers 関数を jest.MockedFunction 型に変換
 // jest.MockedFunctionは、Jestのモック関数の型を表す
+//// モック関数としての特性（例えば、呼び出し回数や引数の検証など）を持つ関数を作成
 // typeof supabaseOperations.insertUsers は、insertUsers 関数の型を取得
+//// insertUsers 関数がどのような引数を受け取り、どのような値を返すかといった型情報を取得
 const mockInsertUsers = supabaseOperations.insertUsers as jest.MockedFunction<
   typeof supabaseOperations.insertUsers
 >;
+
 const mockInsertUserSkill =
   supabaseOperations.insertUserSkill as jest.MockedFunction<
     typeof supabaseOperations.insertUserSkill
   >;
+
 const mockGetSkills = supabaseOperations.getSkills as jest.MockedFunction<
   typeof supabaseOperations.getSkills
 >;
@@ -88,6 +135,21 @@ mockInsertUserSkill.mockImplementation(async (userSkill) => {
   return Promise.resolve();
 });
 
+const setupFavoriteSkillSelect = async () => {
+  const selectElement = await waitFor(async () =>
+    screen.getByTestId("favorite-skill-select")
+  );
+
+  await waitFor(
+    async () => {
+      expect(selectElement).toBeInTheDocument();
+    },
+    { timeout: 10000 }
+  );
+
+  return selectElement;
+};
+
 // テストファイルの先頭で timeout を設定
 jest.setTimeout(30000);
 
@@ -111,51 +173,57 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    const selectElement = await waitFor(async () =>
-      screen.getByTestId("favorite-skill-select")
-    );
+    // const selectElement = await waitFor(async () =>
+    //         screen.getByTestId("favorite-skill-select")
+    // );
 
-    await waitFor(
-      async () => {
-        expect(selectElement).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
+    // await waitFor(
+    //         async () => {
+    //                 expect(selectElement).toBeInTheDocument();
+    //         },
+    //         { timeout: 10000 }
+    // );
 
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-        target: { value: "testusera" },
-      });
-      fireEvent.change(screen.getByLabelText(/お名前/i), {
-        target: { value: "xxxテスト太郎" },
-      });
-      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-        target: { value: "xxxを学習しています" },
-      });
-      fireEvent.change(screen.getByLabelText("GitHub ID"), {
-        target: { value: "github" },
-      });
-      fireEvent.change(screen.getByLabelText("Qiita ID"), {
-        target: { value: "qiita" },
-      });
-      fireEvent.change(screen.getByLabelText("X ID"), {
-        target: { value: "x" },
-      });
+    const selectElement = await setupFavoriteSkillSelect(); // 共通関数を呼び出し
 
-      //  screen.debug();
-    });
+    //     await act(async () => {
+    //       fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+    //         target: { value: "testusera" },
+    //       });
+    //       fireEvent.change(screen.getByLabelText(/お名前/i), {
+    //         target: { value: "xxxテスト太郎" },
+    //       });
+    //       fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+    //         target: { value: "xxxを学習しています" },
+    //       });
+    //       fireEvent.change(screen.getByLabelText("GitHub ID"), {
+    //         target: { value: "github" },
+    //       });
+    //       fireEvent.change(screen.getByLabelText("Qiita ID"), {
+    //         target: { value: "qiita" },
+    //       });
+    //       fireEvent.change(screen.getByLabelText("X ID"), {
+    //         target: { value: "x" },
+    //       });
 
-    await act(async () => {
-      // TypeScriptの型はnumberだが、入力値は文字列で良い
-      fireEvent.change(selectElement, { target: { value: "1" } });
-    });
-    const registerButton = await waitFor(() =>
-      screen.getByTestId("register-button")
-    );
+    //  screen.debug();
+    //     });
 
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
+    await fillFormInputs(); // 共通関数を呼び出し
+
+    // await act(async () => {
+    //         // TypeScriptの型はnumberだが、入力値は文字列で良い
+    //         fireEvent.change(selectElement, { target: { value: "1" } });
+    // });
+    // const registerButton = await waitFor(() =>
+    //         screen.getByTestId("register-button")
+    // );
+
+    // await waitFor(() => {
+    //         fireEvent.click(registerButton);
+    // });
+
+    await selectFavoriteSkillAndSubmit(selectElement); // 共通関数を呼び出し
 
     await waitFor(
       () => {

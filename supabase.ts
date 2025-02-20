@@ -1,5 +1,7 @@
 //  import.meta.envだとテストがエラー
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+// 以下がないと、 npx tsx ./batch/index.tsがError: supabaseUrl is required.になる
+// フレームワークを使わず、このファイル単体でコマンドが実行されるのかもしれない
 import 'dotenv/config'
 
 // SupabaseのURLとAPIキーを環境変数から取得
