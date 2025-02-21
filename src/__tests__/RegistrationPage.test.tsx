@@ -6,36 +6,72 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+// import userEvent from "@testing-library/user-event";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import Register from "@/pages/cards/Register";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import supabase from "../../supabase";
+// import supabase from "../../supabase";
 import * as supabaseOperations from "../lib/supabaseOperations";
 
 const mockedUsedNavigate = jest.fn();
 
-const fillFormInputs = async () => {
+interface FillFormInputsOptions {
+  skipEnglishWord?: boolean;
+  skipName?: boolean;
+  skipDescription?: boolean;
+  skipGitHubId?: boolean;
+  skipQiitaId?: boolean;
+  skipXId?: boolean;
+}
+
+const fillFormInputs = async (options: FillFormInputsOptions = {}) => {
   await act(async () => {
-    fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-      target: { value: "testusera" },
-    });
-    fireEvent.change(screen.getByLabelText(/お名前/i), {
-      target: { value: "xxxテスト太郎" },
-    });
-    fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-      target: { value: "xxxを学習しています" },
-    });
-    fireEvent.change(screen.getByLabelText("GitHub ID"), {
-      target: { value: "github" },
-    });
-    fireEvent.change(screen.getByLabelText("Qiita ID"), {
-      target: { value: "qiita" },
-    });
-    fireEvent.change(screen.getByLabelText("X ID"), {
-      target: { value: "x" },
-    });
+    if (!options.skipEnglishWord) {
+      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
+        target: { value: "testusera" },
+      });
+    }
+    if (!options.skipName) {
+      fireEvent.change(screen.getByLabelText(/お名前/i), {
+        target: { value: "xxxテスト太郎" },
+      });
+    }
+    if (!options.skipDescription) {
+      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
+        target: { value: "xxxを学習しています" },
+      });
+    }
+    if (!options.skipGitHubId) {
+      fireEvent.change(screen.getByLabelText("GitHub ID"), {
+        target: { value: "github" },
+      });
+    }
+    if (!options.skipQiitaId) {
+      fireEvent.change(screen.getByLabelText("Qiita ID"), {
+        target: { value: "qiita" },
+      });
+    }
+    if (!options.skipXId) {
+      fireEvent.change(screen.getByLabelText("X ID"), {
+        target: { value: "x" },
+      });
+    }
   });
+};
+
+const setupFavoriteSkillSelect = async () => {
+  const selectElement = await waitFor(async () =>
+    screen.getByTestId("favorite-skill-select")
+  );
+
+  await waitFor(
+    async () => {
+      expect(selectElement).toBeInTheDocument();
+    },
+    { timeout: 10000 }
+  );
+
+  return selectElement;
 };
 
 export const selectFavoriteSkillAndSubmit = async (
@@ -135,21 +171,6 @@ mockInsertUserSkill.mockImplementation(async (userSkill) => {
   return Promise.resolve();
 });
 
-const setupFavoriteSkillSelect = async () => {
-  const selectElement = await waitFor(async () =>
-    screen.getByTestId("favorite-skill-select")
-  );
-
-  await waitFor(
-    async () => {
-      expect(selectElement).toBeInTheDocument();
-    },
-    { timeout: 10000 }
-  );
-
-  return selectElement;
-};
-
 // テストファイルの先頭で timeout を設定
 jest.setTimeout(30000);
 
@@ -173,57 +194,9 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    // const selectElement = await waitFor(async () =>
-    //         screen.getByTestId("favorite-skill-select")
-    // );
-
-    // await waitFor(
-    //         async () => {
-    //                 expect(selectElement).toBeInTheDocument();
-    //         },
-    //         { timeout: 10000 }
-    // );
-
-    const selectElement = await setupFavoriteSkillSelect(); // 共通関数を呼び出し
-
-    //     await act(async () => {
-    //       fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-    //         target: { value: "testusera" },
-    //       });
-    //       fireEvent.change(screen.getByLabelText(/お名前/i), {
-    //         target: { value: "xxxテスト太郎" },
-    //       });
-    //       fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-    //         target: { value: "xxxを学習しています" },
-    //       });
-    //       fireEvent.change(screen.getByLabelText("GitHub ID"), {
-    //         target: { value: "github" },
-    //       });
-    //       fireEvent.change(screen.getByLabelText("Qiita ID"), {
-    //         target: { value: "qiita" },
-    //       });
-    //       fireEvent.change(screen.getByLabelText("X ID"), {
-    //         target: { value: "x" },
-    //       });
-
-    //  screen.debug();
-    //     });
-
-    await fillFormInputs(); // 共通関数を呼び出し
-
-    // await act(async () => {
-    //         // TypeScriptの型はnumberだが、入力値は文字列で良い
-    //         fireEvent.change(selectElement, { target: { value: "1" } });
-    // });
-    // const registerButton = await waitFor(() =>
-    //         screen.getByTestId("register-button")
-    // );
-
-    // await waitFor(() => {
-    //         fireEvent.click(registerButton);
-    // });
-
-    await selectFavoriteSkillAndSubmit(selectElement); // 共通関数を呼び出し
+    const selectElement = await setupFavoriteSkillSelect();
+    await fillFormInputs();
+    await selectFavoriteSkillAndSubmit(selectElement);
 
     await waitFor(
       () => {
@@ -246,48 +219,9 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    const selectElement = await waitFor(async () =>
-      screen.getByTestId("favorite-skill-select")
-    );
-
-    await waitFor(
-      async () => {
-        expect(selectElement).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
-
-    await act(async () => {
-      // fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-      //         target: { value: "testusera" },
-      // });
-      fireEvent.change(screen.getByLabelText(/お名前/i), {
-        target: { value: "xxxテスト太郎" },
-      });
-      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-        target: { value: "xxxを学習しています" },
-      });
-      fireEvent.change(screen.getByLabelText("GitHub ID"), {
-        target: { value: "github" },
-      });
-      fireEvent.change(screen.getByLabelText("Qiita ID"), {
-        target: { value: "qiita" },
-      });
-      fireEvent.change(screen.getByLabelText("X ID"), {
-        target: { value: "x" },
-      });
-    });
-
-    await act(async () => {
-      fireEvent.change(selectElement, { target: { value: "1" } });
-    });
-    const registerButton = await waitFor(() =>
-      screen.getByTestId("register-button")
-    );
-
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
+    const selectElement = await setupFavoriteSkillSelect();
+    await fillFormInputs({ skipEnglishWord: true });
+    await selectFavoriteSkillAndSubmit(selectElement);
 
     await waitFor(
       () => {
@@ -309,48 +243,9 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    const selectElement = await waitFor(async () =>
-      screen.getByTestId("favorite-skill-select")
-    );
-
-    await waitFor(
-      async () => {
-        expect(selectElement).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-        target: { value: "testusera" },
-      });
-      // fireEvent.change(screen.getByLabelText(/お名前/i), {
-      //         target: { value: "xxxテスト太郎" },
-      // });
-      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-        target: { value: "xxxを学習しています" },
-      });
-      fireEvent.change(screen.getByLabelText("GitHub ID"), {
-        target: { value: "github" },
-      });
-      fireEvent.change(screen.getByLabelText("Qiita ID"), {
-        target: { value: "qiita" },
-      });
-      fireEvent.change(screen.getByLabelText("X ID"), {
-        target: { value: "x" },
-      });
-    });
-
-    await act(async () => {
-      fireEvent.change(selectElement, { target: { value: "1" } });
-    });
-    const registerButton = await waitFor(() =>
-      screen.getByTestId("register-button")
-    );
-
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
+    const selectElement = await setupFavoriteSkillSelect();
+    await fillFormInputs({ skipName: true });
+    await selectFavoriteSkillAndSubmit(selectElement);
 
     await waitFor(
       () => {
@@ -372,48 +267,9 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    const selectElement = await waitFor(async () =>
-      screen.getByTestId("favorite-skill-select")
-    );
-
-    await waitFor(
-      async () => {
-        expect(selectElement).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-        target: { value: "testusera" },
-      });
-      fireEvent.change(screen.getByLabelText(/お名前/i), {
-        target: { value: "xxxテスト太郎" },
-      });
-      // fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-      //         target: { value: "xxxを学習しています" },
-      // });
-      fireEvent.change(screen.getByLabelText("GitHub ID"), {
-        target: { value: "github" },
-      });
-      fireEvent.change(screen.getByLabelText("Qiita ID"), {
-        target: { value: "qiita" },
-      });
-      fireEvent.change(screen.getByLabelText("X ID"), {
-        target: { value: "x" },
-      });
-    });
-
-    await act(async () => {
-      fireEvent.change(selectElement, { target: { value: "1" } });
-    });
-    const registerButton = await waitFor(() =>
-      screen.getByTestId("register-button")
-    );
-
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
+    const selectElement = await setupFavoriteSkillSelect();
+    await fillFormInputs({ skipDescription: true });
+    await selectFavoriteSkillAndSubmit(selectElement);
 
     await waitFor(
       () => {
@@ -435,48 +291,13 @@ describe("Register component", () => {
       </ChakraProvider>
     );
 
-    const selectElement = await waitFor(async () =>
-      screen.getByTestId("favorite-skill-select")
-    );
-
-    await waitFor(
-      async () => {
-        expect(selectElement).toBeInTheDocument();
-      },
-      { timeout: 10000 }
-    );
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/好きな英単語/i), {
-        target: { value: "testusera" },
-      });
-      fireEvent.change(screen.getByLabelText(/お名前/i), {
-        target: { value: "xxxテスト太郎" },
-      });
-      fireEvent.change(screen.getByLabelText(/自己紹介/i), {
-        target: { value: "xxxを学習しています" },
-      });
-      // fireEvent.change(screen.getByLabelText("GitHub ID"), {
-      //         target: { value: "github" },
-      // });
-      // fireEvent.change(screen.getByLabelText("Qiita ID"), {
-      //         target: { value: "qiita" },
-      // });
-      // fireEvent.change(screen.getByLabelText("X ID"), {
-      //         target: { value: "x" },
-      // });
+    const selectElement = await setupFavoriteSkillSelect();
+    await fillFormInputs({
+      skipGitHubId: true,
+      skipQiitaId: true,
+      skipXId: true,
     });
-
-    await act(async () => {
-      fireEvent.change(selectElement, { target: { value: "1" } });
-    });
-    const registerButton = await waitFor(() =>
-      screen.getByTestId("register-button")
-    );
-
-    await waitFor(() => {
-      fireEvent.click(registerButton);
-    });
+    await selectFavoriteSkillAndSubmit(selectElement);
 
     await waitFor(
       () => {
@@ -500,6 +321,7 @@ describe("Register component", () => {
       expect(screen.getByText("名刺新規登録")).toBeInTheDocument();
     });
   });
+
   test("戻るボタンをクリックすると/に遷移する", async () => {
     render(
       <ChakraProvider value={defaultSystem}>
