@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 3  # タイムアウトを3分に設定
     env :
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
@@ -40,6 +41,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     needs: build
     steps:
       - name: Checkout repository

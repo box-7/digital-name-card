@@ -4,6 +4,7 @@ on:
     # 毎日23:07に実行 (UTC 24:01)
     - cron: '07 14 * * *'
 jobs:
+  timeout-minutes: 3  # タイムアウトを3分に設定
   cleanup:
     runs-on: ubuntu-latest
     steps:
