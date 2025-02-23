@@ -1,8 +1,8 @@
 name: Schedule delete table content
 on:
   schedule:
-    # 毎日23:07に実行 (UTC 24:01)
-    - cron: '07 14 * * *'
+    # 毎日12:14に実行
+    - cron: '14 03 * * *'
 jobs:
   timeout-minutes: 3  # タイムアウトを3分に設定
   cleanup:
