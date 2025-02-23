@@ -1,12 +1,12 @@
 name: Schedule delete table content
 on:
   schedule:
-    # 毎日12:14に実行
-    - cron: '14 03 * * *'
+    # 毎日12:25に実行
+    - cron: '25 3 * * *'
 jobs:
-  timeout-minutes: 3  # タイムアウトを3分に設定
   cleanup:
     runs-on: ubuntu-latest
+    timeout-minutes: 3  # タイムアウトを3分に設定
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
