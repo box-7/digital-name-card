@@ -47,5 +47,26 @@
     "vite": "^6.0.11",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "cspell": {
+    "words": [
+      "qiita",
+      "supabase",
+      "vite",
+      "eslint",
+      "prettier",
+      "jest",
+      "react",
+      "typescript",
+      "nextjs",
+      "tailwindcss",
+      "chakra-ui",
+      "react-hook-form",
+      "react-query",
+      "react-router-dom",
+      "react-icons",
+      "react-query",
+      "react-query-devtools"
+    ]
   }
 }
