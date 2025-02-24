@@ -112,11 +112,11 @@ npm run test
 ```
 
 ## 画面
-### 名刺登録
-<img width="250" alt="image" src="https://github.com/user-attachments/assets/67339874-3916-46e1-b739-615b6b5b9465" />
-
 ### 名刺検索
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/40f2251d-223e-45d3-89fe-d8db91ab9534" />
+
+### 名刺登録
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/67339874-3916-46e1-b739-615b6b5b9465" />
 
 ### 名刺閲覧
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/c8b5d897-90e5-49ff-a5a2-8d5f9c5a8c45" />
