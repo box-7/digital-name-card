@@ -28,3 +28,9 @@ dist-ssr
 # Jest HTMLレポート
 html-report/
 result.js
+
+# Firebase cache
+.firebase/hosting.ZGlzdA.cache
+
+# TypeScript build info
+tsconfig.tsbuildinfo
