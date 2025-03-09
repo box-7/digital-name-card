@@ -1,26 +1,29 @@
 // itermではtestできるが、vscodeではtestできない
 // jest.config.tsではなくjest.config.jsにした方がいいかもしれない
+// いつの間にかできるようになった
+// npm install --save-dev ts-jest @types/jestで、ts-jest と @types/jest を開発依存としてインストール
 
 import type { Config } from "jest";
 
 const config: Config = {
-  // npm install --save-dev ts-jest @types/jestでts-jest と @types/jest を開発依存としてインストール
   // TypeScriptのサポートを有効にでき、TypeScriptで書かれたプロジェクトをJestでテストできるようにする
   preset: "ts-jest",
-  // テスト環境がセットアップされた後、setupFilesAfterEnv より前、そしてテストコード自体がそれぞれ実行される前に実行される
-  // Jestは .env ファイルから環境変数を自動的に読み込むことができず、テストコード内で process.env を使って環境変数にアクセスすることができない
-// Jestがテストを実行する前にdotenvパッケージを使用して環境変数を読み込むことを指定
+
+  // テストコード自体がそれぞれ実行される前に実行される
+  // Jestは .env ファイルから環境変数を自動的に読み込むことができない
+// setupFiles: ["dotenv/config"]を使用すると、Jestがテストを実行する前にdotenvパッケージを読み込み、.envファイルに定義された環境変数をprocess.envに設定
+// テストコード内でprocess.envを使って環境変数にアクセスできるようになる
   setupFiles: ["dotenv/config"],
-  // jsdom は、Node.js 環境でブラウザのようなDOM（Document Object Model）をシミュレートするためのライブラリ
+
+  // jsdom は、Node.js 環境でDOM（Document Object Model）をシミュレートするためのライブラリ
   testEnvironment: "jest-environment-jsdom",
-//   testEnvironment: "node",
-//   testEnvironment: "jest-environment-jsdom-sixteen",
-  // setupFilesAfterEnv: テスト環境がセットアップされた後に実行されるスクリプトファイルのリストを指定
-//   setupFilesAfterEnv: ["./jest.setup.ts"],
- // 上の書き方だと、「全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される」が通らない
+
+// setupFilesAfterEnv: テスト環境がセットアップされた後に実行されるスクリプトファイルのリストを指定
+// setupFilesAfterEnv: ["./jest.setup.ts"], // この書き方だと、「全項目を入力して登録ボタンを押すと/に遷移し、データがSupabaseに登録される」が通らない
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+
   // JestがTypeScriptファイルをトランスパイル（変換）するための設定
-  // 具体的には、ts-jest を使用して .ts や .tsx ファイルをJavaScriptに変換
+  // ts-jest を使用して .ts や .tsx ファイルをJavaScriptに変換
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },

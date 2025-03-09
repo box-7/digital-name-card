@@ -6,23 +6,27 @@ import envCompatible from "vite-plugin-env-compatible";
 // defineConfig 関数を使うと、Viteの設定をオブジェクトとしてエクスポートする際に、型補完やエラーチェックが効く
 export default defineConfig({
   plugins: [
-    react(), // ViteのReactプロジェクト用のデフォルトプラグインを設定
-    tsconfigPaths(), // TypeScriptの tsconfig.json ファイルで設定されたパスエイリアスをViteで使用できるようにするプラグイン
+    // ViteのReactプロジェクト用のデフォルトプラグイン
+    react(),
+    // TypeScriptの tsconfig.json ファイルで設定されたパスエイリアスをViteで使用できるようにするプラグイン
+    tsconfigPaths(),
+    // vite-plugin-env-compatibleプラグインを使用して、環境変数(.envで定義)をViteプロジェクトに適用するために使用される
+    // Jestでの使用: Viteの環境変数をJestで使用できるようにする
     envCompatible({
-      // envCompatibleは、Viteのプラグインの一つで、環境変数をViteプロジェクトに適用するために使用される
-
-      // 環境変数のプレフィックス(特定の文字列の前に付ける接頭辞のこと)を指定
-      // VITE_API_KEY のようにプレフィックスを付けた環境変数を使用する
-      // .env ファイルに VITE_API_KEY として定義された変数は、import.meta.env.VITE_API_KEY としてアクセスできる
+      // プレフィックスの指定: 環境変数の前に付ける特定の文字列（この場合はVITE_）を指定
+      // セキュリティ: ViteはデフォルトでVITE_プレフィックスが付いた環境変数のみをクライアントサイドのコードに公開
+      // 意図しない環境変数がクライアントサイドに漏洩するのを防ぐ
       prefix: "VITE",
 
-      // 環境変数をマウントするパスを指定
-      // process.envは、Node.js環境で使用されるオブジェクトで、環境変数にアクセスするためのもの
+      // 環境変数をprocess.env形式で利用できるようにする 例: process.env.VITE_API_KEY として環境変数にアクセスできる
+      // 環境変数を process.env にマウントすることで、Node.js 環境で使用されるオブジェクトにアクセスできるようにする
+      // サーバーサイドのコードやテスト環境でも同じ環境変数を使用できる
       mountedPath: "process.env",
     }),
   ],
   build: {
-    sourcemap: true, // ソースマップを有効にする
+    // ソースマップを有効にする
+    sourcemap: true,
   },
 });
 

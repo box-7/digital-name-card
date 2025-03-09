@@ -8,7 +8,8 @@ global.TextDecoder = UtilTextDecoder as unknown as {
 };
 
 module.exports = {
-  // <rootDir> は、Jestの設定ファイルで使用される特殊なトークンで、プロジェクトのルートディレクトリを指す
+  // <rootDir> は、Jestの設定ファイルで使用される特殊なトークン
+  // プロジェクトのルートディレクトリを指す
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
